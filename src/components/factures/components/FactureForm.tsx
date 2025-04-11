@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -62,9 +61,29 @@ export function FactureForm({
   const [taxInputType, setTaxInputType] = useState<Record<string, "percentage" | "amount">>({});
   
   // Récupérer la liste des produits
-  const { products, loading: productsLoading } = useProducts();
-  console.log('FactureForm - Products:', products);
-  console.log('FactureForm - Loading:', productsLoading);
+  const { produits, loading: produitsLoading, error: produitsError } = useProducts();
+  
+  console.log('💼 FactureForm - Produits:', produits);
+  console.log('💼 FactureForm - Loading:', produitsLoading);
+  console.log('💼 FactureForm - Error:', produitsError);
+
+  // État local pour gérer les lignes de facture
+  const [lines, setLines] = useState([]);
+
+  // Gestion du changement de produit
+  const handleProductChange = (index: number, name: string) => {
+    const produit = produits.find(p => p.nom === name);
+    if (produit) {
+      const updatedLines = [...lines];
+      updatedLines[index] = {
+        ...updatedLines[index],
+        name: produit.nom,
+        price: produit.prix,
+        tva: produit.taux_tva
+      };
+      setLines(updatedLines);
+    }
+  };
 
   // Fonction pour basculer entre les types de saisie de TVA
   const toggleTaxInputType = (id: string) => {
@@ -98,17 +117,10 @@ export function FactureForm({
                 Produit ou service
               </Label>
               <ProductCombobox
-                products={products}
+                products={produits}
                 value={line.name}
-                onChange={(value, product) => {
-                  onProductNameChange(
-                    line.id,
-                    value,
-                    product?.prix,
-                    product?.taux_tva
-                  );
-                }}
-                disabled={productsLoading}
+                onChange={(value) => handleProductChange(index, value)}
+                disabled={produitsLoading}
               />
             </div>
 
