@@ -1,0 +1,32 @@
+.notfound-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+  min-height: 100vh; /* 👈 Full page height */
+  box-sizing: border-box;
+  background-color: #fff; /* Optional: set background */
+}
+
+.notfound-text {
+  max-width: 400px;
+}
+
+.notfound-image img {
+  max-width: 550px;
+  width: 100%;
+}
+
+.notfound-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: #6a5acd;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.notfound-link:hover {
+  text-decoration: underline;
+}
