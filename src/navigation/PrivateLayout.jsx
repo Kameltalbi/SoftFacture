@@ -16,12 +16,42 @@ const PrivateLayout = ({ children }) => {
   }
 
   return (
-    <Layout>
-      <Sidebar collapsed={collapsed} />
-      <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
-        <Content style={{ padding: "24px" }}>{children}</Content>
-      </Layout>
-    </Layout>
+    <>
+      <style>
+        {`
+          html, body, #root {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+          }
+        `}
+      </style>
+      <div
+        style={{
+          display: "flex",
+          height: "100vh",
+          margin: 0,
+          backgroundColor: "red",
+        }}
+      >
+        {/* Sidebar */}
+        <Sidebar />
+
+        {/* Main Content */}
+        <div style={{ flex: 1, padding: "20px", backgroundColor: "#F0F2F5" }}>
+          <h1
+            style={{
+              fontSize: "24px",
+              fontWeight: "bold",
+              marginBottom: "20px",
+            }}
+          >
+            Tableau de bord
+          </h1>
+          <p>Welcome to the Dashboard! This is the main content area.</p>
+        </div>
+      </div>
+    </>
   );
 };
 

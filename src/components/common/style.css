@@ -1,0 +1,39 @@
+:root {
+    --secondary-color: #2E3A59;
+    --primary-color: #1890FF;
+    --dark-gray-color: #A6ADB4;
+    --white-color: #FFFFFF;
+  }
+  
+.sidebar {
+    width: 256px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+  }
+  
+  .sidebar-header {
+    margin-bottom: 24px;
+  }
+  
+  .sidebar-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--white-color);
+  }
+  
+  .sidebar-subtitle {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--white-color);
+  }
+  
+  .sidebar-support {
+    margin-top: auto;
+  }
+  

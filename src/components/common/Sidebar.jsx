@@ -1,87 +1,135 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Menu } from "antd";
 import {
-  DashboardOutlined,
-  UserOutlined,
-  SettingOutlined,
-  TeamOutlined,
-  AppstoreOutlined,
-} from "@ant-design/icons";
-const { Sider } = Layout;
-const { SubMenu } = Menu;
+  SECONDARY,
+  DARK_GRAY,
+  PRIMARY,
+  WHITE,
+} from "../../utils/constants/colors";
+import "./style.css";
+import { COMPANY_NAME, TAX_ID } from "../../utils/constants/constants";
 
-const Sidebar = ({ collapsed }) => {
+const Sidebar = () => {
   return (
-    <Sider
-      collapsible
-      collapsed={collapsed}
-      style={{
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        background: "#001529",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
+    <div
+      className="sidebar"
+      style={{ backgroundColor: SECONDARY, color: WHITE }}
     >
-      {/* Logo Section */}
-      <div
-        style={{
-          height: 64,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-          fontSize: 20,
-          fontWeight: "bold",
-          borderBottom: "1px solid rgba(255,255,255,0.1)",
-        }}
-      >
-        <img
-          src="../../assets/images/logo.png"
-          alt="logo"
-          style={{ height: 32 }}
-        />
+      {/* Header */}
+      <div className="sidebar-header">
+        <h1 className="sidebar-title">{COMPANY_NAME}</h1>
+        <div className="sidebar-subtitle">
+          <span className="sidebar-icon">🏠</span>
+          <h2 className="sidebar-mainlink">Tableau de bord</h2>
+        </div>
       </div>
 
-      {/* Menu Section */}
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboard"]}>
-        <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
-          Dashboard
-        </Menu.Item>
-        <SubMenu key="users" icon={<UserOutlined />} title="Users">
-          <Menu.Item key="users:1">All Users</Menu.Item>
-          <Menu.Item key="users:2">Add User</Menu.Item>
-        </SubMenu>
-        <SubMenu key="settings" icon={<SettingOutlined />} title="Settings">
-          <Menu.Item key="settings:1">Profile</Menu.Item>
-          <Menu.Item key="settings:2">Preferences</Menu.Item>
-        </SubMenu>
-        <SubMenu key="apps" icon={<AppstoreOutlined />} title="Apps">
-          <Menu.Item key="apps:1">CRM</Menu.Item>
-          <Menu.Item key="apps:2">Analytics</Menu.Item>
-        </SubMenu>
-        <Menu.Item key="team" icon={<TeamOutlined />}>
-          Team
-        </Menu.Item>
-      </Menu>
+      {/* Documents Section */}
+      <Menu
+        theme="dark"
+        mode="vertical"
+        style={{ backgroundColor: SECONDARY, border: "none", color: WHITE }}
+        items={[
+          {
+            key: "documents",
+            label: (
+              <h3
+                style={{
+                  color: DARK_GRAY,
+                  fontSize: "14px",
+                  fontWeight: "700",
+                  margin: "8px 0",
+                }}
+              >
+                DOCUMENTS
+              </h3>
+            ),
+            type: "group",
+            children: [
+              {
+                key: "factures",
+                label: <span className="sidebar-item">💵 Factures</span>,
+              },
+              {
+                key: "devis",
+                label: <span className="sidebar-item">📝 Devis</span>,
+              },
+              {
+                key: "bons",
+                label: (
+                  <span className="sidebar-item">📦 Bons de livraison</span>
+                ),
+              },
+            ],
+          },
+          {
+            key: "fiches",
+            label: (
+              <h3
+                style={{
+                  color: DARK_GRAY,
+                  fontSize: "14px",
+                  fontWeight: "700",
+                  margin: "8px 0",
+                }}
+              >
+                FICHES
+              </h3>
+            ),
+            type: "group",
+            children: [
+              {
+                key: "clients",
+                label: <span className="sidebar-item">👥 Clients</span>,
+              },
+              {
+                key: "fournisseurs",
+                label: (
+                  <div
+                    className="sidebar-item"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span>🏢 Fournisseurs</span>
+                  </div>
+                ),
+              },
+            ],
+          },
+          {
+            key: "parametres",
+            label: <span className="sidebar-item">⚙️ Paramètres</span>,
+          },
+        ]}
+      />
 
-      {/* Footer Section */}
+      {/* Business Info Section */}
       <div
-        style={{
-          padding: "16px",
-          color: "#fff",
-          textAlign: "center",
-          fontSize: 12,
-          borderTop: "1px solid rgba(255,255,255,0.1)",
-        }}
+        className="sidebar-support"
+        style={{ textAlign: "center", padding: "16px" }}
       >
-        © 2025 MyCompany
+        <h3
+          className="sidebar-business-name"
+          style={{
+            color: WHITE,
+            fontSize: "16px",
+            fontWeight: "600",
+            marginBottom: "4px",
+          }}
+        >
+          {COMPANY_NAME}
+        </h3>
+        <p
+          className="sidebar-business-id"
+          style={{ color: DARK_GRAY, fontSize: "12px" }}
+        >
+          Matricule Fiscal: {TAX_ID}
+        </p>
       </div>
-    </Sider>
+    </div>
   );
 };
 
