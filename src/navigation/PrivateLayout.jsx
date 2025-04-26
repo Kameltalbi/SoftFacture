@@ -39,16 +39,7 @@ const PrivateLayout = ({ children }) => {
 
         {/* Main Content */}
         <div style={{ flex: 1, padding: "20px", backgroundColor: "#F0F2F5" }}>
-          <h1
-            style={{
-              fontSize: "24px",
-              fontWeight: "bold",
-              marginBottom: "20px",
-            }}
-          >
-            Tableau de bord
-          </h1>
-          <p>Welcome to the Dashboard! This is the main content area.</p>
+          {children}
         </div>
       </div>
     </>

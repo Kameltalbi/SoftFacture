@@ -8,8 +8,11 @@ import {
 } from "../../utils/constants/colors";
 import "./style.css";
 import { COMPANY_NAME, TAX_ID } from "../../utils/constants/constants";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <div
       className="sidebar"
@@ -29,6 +32,9 @@ const Sidebar = () => {
         theme="dark"
         mode="vertical"
         style={{ backgroundColor: SECONDARY, border: "none", color: WHITE }}
+        onClick={({ key }) => {
+          navigate(`/${key}`);
+        }}
         items={[
           {
             key: "documents",

@@ -1,0 +1,36 @@
+{
+    "api":{},
+    "components":{
+        "sidebar":{
+            
+        }
+    },
+    "screens":{
+        "auth":{
+            "title":"LogIn",
+            "placeholder":{
+                "email":"Email",
+                "password":"Password"
+            },
+            "error": {
+                "email":"Email is required",
+                "password":"Password is required", 
+                "fillAllFields":"Please fill out all required fields."
+            },
+            "forgetPassword":"Forgot your password?",
+            "login":"LogIn",
+            "loginInProgress":"Logging in...",
+            "dontHaveAccount":"Don't have an account?",
+            "signup":"SignUp", 
+            "loginSuccess":"Login successful",
+            "loginFailed":"Login failed. Please check your credentials."
+        },
+        "dashboard":{
+
+        },
+        "client":{
+
+        }
+    }
+  }
+  

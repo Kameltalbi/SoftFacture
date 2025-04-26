@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "./container/redux/store";
 import App from "./App.jsx";
+import './container/translation/i18n'
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
