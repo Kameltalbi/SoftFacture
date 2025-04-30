@@ -7,6 +7,7 @@ import CreateClient from "../screens/clients/CreateClient";
 import EditClient from "../screens/clients/EditClient";
 import NotFoundPage from "../screens/notfound/NotFoundScreen";
 import PrivateLayout from "../navigation/PrivateLayout";
+import SettingsScreen from "../screens/settings/SettingsScreen";
 
 const AppRoutes = () => {
   return (
@@ -45,6 +46,15 @@ const AppRoutes = () => {
           element={
             <PrivateLayout>
               <EditClient />
+            </PrivateLayout>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <PrivateLayout>
+              <SettingsScreen />
             </PrivateLayout>
           }
         />

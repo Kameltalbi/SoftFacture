@@ -1,139 +1,176 @@
-import React from "react";
-import { Menu } from "antd";
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { LogoutOutlined } from "@ant-design/icons";
 import {
-  SECONDARY,
-  DARK_GRAY,
-  PRIMARY,
-  WHITE,
-} from "../../utils/constants/colors";
+  Grid,
+  Home,
+  FileText,
+  FileSpreadsheet,
+  Package2,
+  Users,
+  Settings,
+  Menu as MenuIcon,
+  ChevronRight,
+  LayoutDashboard,
+} from "lucide-react";
+import { useDispatch, useSelector } from "react-redux"; // Import useSelector to access Redux state
 import "./style.css";
-import { COMPANY_NAME, TAX_ID } from "../../utils/constants/constants";
-import { useNavigate } from "react-router-dom";
+import { logout } from "../../container/redux/slices/authSlice";
 
 const Sidebar = () => {
+  const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  // Access the company info from the Redux store
+  const companyInfo = useSelector((state) => state.settings.company);
+
+  // Fallback to default values if company info is not available
+  const companyName = companyInfo?.name || "InvoiceFlow SARL";
+  const taxId = companyInfo?.vatNumber || "FR12345678900";
+
+  const menuGroups = [
+    {
+      items: [
+        {
+          key: "dashboard",
+          label: t("components.sidebar.dashboard"), // Assuming you have the translation for 'dashboard'
+          icon: LayoutDashboard, // You can choose an icon for the dashboard
+        },
+      ],
+    },
+    {
+      title: t("components.sidebar.documents"),
+      items: [
+        {
+          key: "invoices",
+          label: t("components.sidebar.invoices"),
+          icon: FileText,
+        },
+        {
+          key: "quotes",
+          label: t("components.sidebar.quotes"),
+          icon: FileSpreadsheet,
+        },
+        {
+          key: "deliveryNotes",
+          label: t("components.sidebar.deliveryNotes"),
+          icon: Package2,
+        },
+      ],
+    },
+    {
+      title: t("components.sidebar.sheets"),
+      items: [
+        { key: "clients", label: t("components.sidebar.clients"), icon: Users },
+        {
+          key: "suppliers",
+          label: t("components.sidebar.suppliers"),
+          icon: Users,
+        },
+      ],
+    },
+    {
+      title: t("components.sidebar.settings"),
+      items: [
+        {
+          key: "settings",
+          label: t("components.sidebar.settingsLabel"),
+          icon: Settings,
+        },
+      ],
+    },
+  ];
+
+  const toggleSidebar = () => setExpanded((prev) => !prev);
+  const isActive = (path) => location.pathname === `/${path}`;
+
+  // Handle logout
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login"); // Navigate to login page (or wherever you want)
+  };
 
   return (
     <div
-      className="sidebar"
-      style={{ backgroundColor: SECONDARY, color: WHITE }}
+      className={`sidebar ${
+        expanded ? "sidebar-expanded" : "sidebar-collapsed"
+      }`}
     >
       {/* Header */}
       <div className="sidebar-header">
-        <h1 className="sidebar-title">{COMPANY_NAME}</h1>
-        <div className="sidebar-subtitle">
-          <span className="sidebar-icon">🏠</span>
-          <h2 className="sidebar-mainlink">Tableau de bord</h2>
+        <div className="sidebar-header-content">
+          {expanded && (
+            <>
+              <Home className="sidebar-icon" />
+              <span className="sidebar-title">{companyName}</span>
+            </>
+          )}
         </div>
+        <button
+          className="sidebar-toggle"
+          onClick={toggleSidebar}
+          aria-label="Toggle Sidebar"
+        >
+          {expanded ? <ChevronRight /> : <MenuIcon />}
+        </button>
       </div>
 
-      {/* Documents Section */}
-      <Menu
-        theme="dark"
-        mode="vertical"
-        style={{ backgroundColor: SECONDARY, border: "none", color: WHITE }}
-        onClick={({ key }) => {
-          navigate(`/${key}`);
-        }}
-        items={[
-          {
-            key: "documents",
-            label: (
-              <h3
-                style={{
-                  color: DARK_GRAY,
-                  fontSize: "14px",
-                  fontWeight: "700",
-                  margin: "8px 0",
-                }}
-              >
-                DOCUMENTS
-              </h3>
-            ),
-            type: "group",
-            children: [
-              {
-                key: "factures",
-                label: <span className="sidebar-item">💵 Factures</span>,
-              },
-              {
-                key: "devis",
-                label: <span className="sidebar-item">📝 Devis</span>,
-              },
-              {
-                key: "bons",
-                label: (
-                  <span className="sidebar-item">📦 Bons de livraison</span>
-                ),
-              },
-            ],
-          },
-          {
-            key: "fiches",
-            label: (
-              <h3
-                style={{
-                  color: DARK_GRAY,
-                  fontSize: "14px",
-                  fontWeight: "700",
-                  margin: "8px 0",
-                }}
-              >
-                FICHES
-              </h3>
-            ),
-            type: "group",
-            children: [
-              {
-                key: "clients",
-                label: <span className="sidebar-item">👥 Clients</span>,
-              },
-              {
-                key: "fournisseurs",
-                label: (
-                  <div
-                    className="sidebar-item"
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span>🏢 Fournisseurs</span>
-                  </div>
-                ),
-              },
-            ],
-          },
-          {
-            key: "parametres",
-            label: <span className="sidebar-item">⚙️ Paramètres</span>,
-          },
-        ]}
-      />
+      {/* Menu */}
+      <div className="sidebar-menu">
+        {menuGroups.map((group) => (
+          <div key={group.title}>
+            {expanded && (
+              <div className="sidebar-group-title">{group.title}</div>
+            )}
+            <ul className="sidebar-menu-list">
+              {group.items.map(({ key, label, icon: Icon }) => (
+                <li
+                  key={key}
+                  className={`sidebar-menu-item ${
+                    isActive(key) ? "active" : ""
+                  }`}
+                  onClick={() => navigate(`/${key}`)}
+                >
+                  <Icon className="sidebar-item-icon" />
+                  {expanded && <span>{label}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
 
-      {/* Business Info Section */}
-      <div
-        className="sidebar-support"
-        style={{ textAlign: "center", padding: "16px" }}
-      >
-        <h3
-          className="sidebar-business-name"
-          style={{
-            color: WHITE,
-            fontSize: "16px",
-            fontWeight: "600",
-            marginBottom: "4px",
-          }}
-        >
-          {COMPANY_NAME}
-        </h3>
-        <p
-          className="sidebar-business-id"
-          style={{ color: DARK_GRAY, fontSize: "12px" }}
-        >
-          Matricule Fiscal: {TAX_ID}
-        </p>
+      {/* Footer */}
+      <div className="sidebar-footer">
+        {expanded ? (
+          <>
+            <div style={{ textAlign: "left" }}>
+              <div className="sidebar-footer-company">{companyName}</div>
+              <div className="sidebar-footer-id">
+                {t("components.sidebar.taxId")}: {taxId}
+              </div>
+            </div>
+            <button
+              className="sidebar-logout-button"
+              onClick={handleLogout}
+              aria-label="Logout"
+            >
+              <LogoutOutlined style={{ fontSize: "20px" }} />
+            </button>
+          </>
+        ) : (
+          <button
+            className="sidebar-logout-button"
+            onClick={handleLogout}
+            aria-label="Logout"
+          >
+            <LogoutOutlined style={{ fontSize: "22px" }} />
+          </button>
+        )}
       </div>
     </div>
   );

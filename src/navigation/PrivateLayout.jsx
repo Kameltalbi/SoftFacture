@@ -4,6 +4,7 @@ import { Layout } from "antd";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
+import { LIGHT_BLUE, LIGHT_GRAY, WHITE } from "../utils/constants/colors";
 
 const { Content } = Layout;
 
@@ -22,23 +23,27 @@ const PrivateLayout = ({ children }) => {
           html, body, #root {
             margin: 0;
             padding: 0;
-            height: 100%;
+
           }
         `}
       </style>
       <div
         style={{
           display: "flex",
-          height: "100vh",
           margin: 0,
           backgroundColor: "red",
+          position:"absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
         }}
       >
         {/* Sidebar */}
         <Sidebar />
 
         {/* Main Content */}
-        <div style={{ flex: 1, padding: "20px", backgroundColor: "#F0F2F5" }}>
+        <div style={{ flex: 1, padding: "20px", backgroundColor : LIGHT_GRAY}}>
           {children}
         </div>
       </div>

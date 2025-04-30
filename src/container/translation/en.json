@@ -1,36 +1,130 @@
 {
-    "api":{},
-    "components":{
-        "sidebar":{
-            
-        }
+  "api": {},
+  "components": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "documents": "Documents",
+      "sheets": "Sheets",
+      "settings": "Settings",
+      "invoices": "Invoices",
+      "quotes": "Quotes",
+      "deliveryNotes": "Delivery Notes",
+      "clients": "Clients",
+      "suppliers": "Suppliers",
+      "settingsLabel": "Settings",
+      "taxId": "Tax ID"
     },
-    "screens":{
-        "auth":{
-            "title":"LogIn",
-            "placeholder":{
-                "email":"Email",
-                "password":"Password"
-            },
-            "error": {
-                "email":"Email is required",
-                "password":"Password is required", 
-                "fillAllFields":"Please fill out all required fields."
-            },
-            "forgetPassword":"Forgot your password?",
-            "login":"LogIn",
-            "loginInProgress":"Logging in...",
-            "dontHaveAccount":"Don't have an account?",
-            "signup":"SignUp", 
-            "loginSuccess":"Login successful",
-            "loginFailed":"Login failed. Please check your credentials."
-        },
-        "dashboard":{
+    "companySettings": {
+      "cardTitle": "Company Information",
+      "nameLabel": "Company Name",
+      "namePlaceholder": "Enter company name",
+      "nameRequired": "Company name is required",
+      "vatNumberLabel": "VAT Number",
+      "vatNumberPlaceholder": "Enter VAT number",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email",
+      "emailInvalid": "Invalid email address",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "Enter phone number",
+      "addressLabel": "Address",
+      "addressPlaceholder": "Enter company address",
+      "saveButton": "Save",
+      "saveSuccess": "Company information updated successfully!"
+    },
+    "taxSettings": {
+      "cardTitle": "Tax Settings",
+      "addButton": "Add Tax",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this tax?",
+      "yes": "Yes",
+      "no": "No",
+      "addSuccess": "Tax added successfully!",
+      "updateSuccess": "Tax updated successfully!",
+      "deleteSuccess": "Tax deleted successfully!",
+      "nameColumn": "Name",
+      "valueColumn": "Rate",
+      "typeColumn": "Type",
+      "namePlaceholder": "Enter name",
+      "valuePlaceholder": "Enter rate",
+      "nameRequired": "Please enter a name",
+      "valueRequired": "Please enter a rate",
+      "valueLabel": "Value",
+      "typeLabel": "Type",
+      "fixed": "Fixed",
+      "percentage": "Percentage"
+    },
+    "currencySettings": {
+      "cardTitle": "Currency Settings",
+      "addButton": "Add Currency",
+      "addSuccess": "Currency added successfully!",
+      "updateSuccess": "Currency updated successfully!",
+      "deleteSuccess": "Currency deleted successfully!",
+      "save": "Save",
+      "cancel": "Cancel",
 
-        },
-        "client":{
+      "nameLabel": "Currency Name",
+      "namePlaceholder": "Enter currency name",
+      "nameRequired": "Currency name is required",
+      "confirmDelete": "Are you sure you want to delete this currency?",
+      "yes": "Yes",
+      "no": "No",
+      "codeLabel": "Currency Code",
+      "codePlaceholder": "Enter currency code (e.g., USD)",
+      "codeRequired": "Currency code is required",
 
-        }
+      "symbolLabel": "Currency Symbol",
+      "symbolPlaceholder": "Enter currency symbol (e.g., $)",
+      "symbolRequired": "Currency symbol is required",
+
+      "exchangeRateLabel": "Exchange Rate",
+      "exchangeRatePlaceholder": "Enter exchange rate",
+      "exchangeRateRequired": "Exchange rate is required",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+   "invoiceNumberSettings": {
+      "cardTitle": "Invoice Numbering Settings",
+      "prefixLabel": "Prefix",
+      "suffixLabel": "Suffix",
+      "digitsLabel": "Number of Digits",
+      "digitsRequired": "Please select the number of digits",
+      "digit": "digit",
+      "digits": "digits",
+      "nextNumberLabel": "Next Invoice Number",
+      "nextNumberRequired": "Please enter the next invoice number (minimum 1)",
+      "resetPeriodLabel": "Reset Period",
+      "annual": "Annual – Continue invoice numbering throughout the year",
+      "monthly": "Monthly – Reset invoice number at the start of each month",
+      "previewLabel": "Invoice Number Preview",
+      "previewDescription": "This preview shows how your next invoice number will look based on the selected settings.",
+      "saveButton": "Save Settings",
+      "saveSuccess": "Invoice numbering settings updated successfully"
     }
+  },
+  "screens": {
+    "auth": {
+      "title": "Log In",
+      "placeholder": {
+        "email": "Email",
+        "password": "Password"
+      },
+      "error": {
+        "email": "Email is required",
+        "password": "Password is required",
+        "fillAllFields": "Please fill out all required fields."
+      },
+      "forgetPassword": "Forgot your password?",
+      "login": "Log In",
+      "loginInProgress": "Logging in...",
+      "dontHaveAccount": "Don't have an account?",
+      "signup": "Sign Up",
+      "loginSuccess": "Login successful",
+      "loginFailed": "Login failed. Please check your credentials."
+    },
+    "dashboard": {},
+    "client": {}
   }
-  
+}

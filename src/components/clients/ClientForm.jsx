@@ -40,7 +40,7 @@ const ClientForm = ({ initialValues, onFinish, loading }) => {
       <Form.Item
         label="Company Name"
         name="company"
-        rules={[{ required: true, message: 'Please enter company name' }]}
+        rules={[{ required: false, message: 'Please enter company name' }]}
       >
         <Input placeholder="Awesome Company" size="large" />
       </Form.Item>
@@ -48,7 +48,7 @@ const ClientForm = ({ initialValues, onFinish, loading }) => {
       <Form.Item
         label="Fiscal ID (Matricule Fiscal)"
         name="fiscalId"
-        rules={[{ required: true, message: 'Please enter fiscal ID' }]}
+        rules={[{ required: false, message: 'Please enter fiscal ID' }]}
       >
         <Input placeholder="MF123456789" size="large" />
       </Form.Item>
