@@ -1,9 +1,11 @@
-import React from 'react';
-import { Form, Input, Button, Switch } from 'antd';
-import { PRIMARY, DARK_GRAY } from '../../utils/constants/colors';
+import React from "react";
+import { Form, Input, Button } from "antd";
+import { PRIMARY } from "../../utils/constants/colors";
+import { useTranslation } from "react-i18next";
 
 const ClientForm = ({ initialValues, onFinish, loading }) => {
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   return (
     <Form
@@ -11,59 +13,64 @@ const ClientForm = ({ initialValues, onFinish, loading }) => {
       layout="vertical"
       initialValues={initialValues}
       onFinish={onFinish}
-      style={{ maxWidth: 600, margin: '0 auto', backgroundColor: 'white', padding: '24px', borderRadius: '12px', boxShadow: '0px 0px 10px rgba(0,0,0,0.05)' }}
+      style={{
+        maxWidth: 600,
+        margin: "0 auto",
+        backgroundColor: "white",
+        padding: "24px",
+        borderRadius: "12px",
+        boxShadow: "0px 0px 10px rgba(0,0,0,0.05)",
+      }}
     >
       <Form.Item
-        label="Full Name"
+        label={t("components.clientForm.fullNameLabel")}
         name="fullName"
-        rules={[{ required: true, message: 'Please enter full name' }]}
+        rules={[{ required: true, message: t("components.clientForm.fullNameRequired") }]}
       >
-        <Input placeholder="John Doe" size="large" />
+        <Input placeholder={t("components.clientForm.fullNamePlaceholder")} size="large" />
       </Form.Item>
 
       <Form.Item
-        label="Email"
+        label={t("components.clientForm.emailLabel")}
         name="email"
-        rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}
+        rules={[{ required: true, type: "email", message: t("components.clientForm.emailRequired") }]}
       >
-        <Input placeholder="example@email.com" size="large" />
+        <Input placeholder={t("components.clientForm.emailPlaceholder")} size="large" />
       </Form.Item>
 
       <Form.Item
-        label="Phone"
+        label={t("components.clientForm.phoneLabel")}
         name="phone"
-        rules={[{ required: true, message: 'Please enter phone number' }]}
+        rules={[{ required: true, message: t("components.clientForm.phoneRequired") }]}
       >
-        <Input placeholder="+1 234 567 890" size="large" />
+        <Input placeholder={t("components.clientForm.phonePlaceholder")} size="large" />
       </Form.Item>
 
       <Form.Item
-        label="Company Name"
+        label={t("components.clientForm.companyLabel")}
         name="company"
-        rules={[{ required: false, message: 'Please enter company name' }]}
       >
-        <Input placeholder="Awesome Company" size="large" />
+        <Input placeholder={t("components.clientForm.companyPlaceholder")} size="large" />
       </Form.Item>
 
       <Form.Item
-        label="Fiscal ID (Matricule Fiscal)"
+        label={t("components.clientForm.fiscalIdLabel")}
         name="fiscalId"
-        rules={[{ required: false, message: 'Please enter fiscal ID' }]}
       >
-        <Input placeholder="MF123456789" size="large" />
+        <Input placeholder={t("components.clientForm.fiscalIdPlaceholder")} size="large" />
       </Form.Item>
 
       <Form.Item
-        label="Address"
+        label={t("components.clientForm.addressLabel")}
         name="address"
-        rules={[{ required: true, message: 'Please enter address' }]}
+        rules={[{ required: true, message: t("components.clientForm.addressRequired") }]}
       >
-        <Input.TextArea placeholder="123 Main St, City, Country" size="large" autoSize />
+        <Input.TextArea placeholder={t("components.clientForm.addressPlaceholder")} size="large" autoSize />
       </Form.Item>
 
       <Form.Item>
         <Button type="primary" htmlType="submit" size="large" loading={loading} block style={{ backgroundColor: PRIMARY }}>
-          Submit
+          {t("components.clientForm.submitButton")}
         </Button>
       </Form.Item>
     </Form>

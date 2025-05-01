@@ -13,6 +13,7 @@ import { SaveOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useWatch } from "antd/es/form/Form";
+import * as Colors from "../../utils/constants/colors";
 
 import {
   setInvoiceNumbering,
@@ -170,6 +171,7 @@ const InvoiceNumberSettings = () => {
               htmlType="submit"
               loading={isLoading}
               icon={<SaveOutlined />}
+              style={{backgroundColor: Colors.PRIMARY}}
             >
               {t("components.invoiceNumberSettings.saveButton")}
             </Button>

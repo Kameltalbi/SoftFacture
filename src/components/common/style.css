@@ -1,9 +1,9 @@
 :root {
-  --primary: #1890FF;      /* Main blue color */
-  --secondary: #f5f7fa;    /* Light background */
+  --primary: #4B7090;      /* Main blue color */
+  --secondary: #2C4159 ;    /* Light background */
   --white: #ffffff;
-  --dark-gray: #6b7280;
-  --text-color: #333333;
+  --dark-gray: #A0A8B3;
+  --text-color: #F5F7FA;
 }
 
 .sidebar {
@@ -42,19 +42,19 @@
 .sidebar-icon {
   height: 28px;
   width: 28px;
-  color: var(--primary);
+  color: var(--text-color);
 }
 
 .sidebar-title {
   font-size: 18px;
   font-weight: bold;
-  color: var(--primary);
+  color: var(--text-color);
 }
 
 .sidebar-toggle {
   background: transparent;
   border: none;
-  color: var(--primary);
+  color: var(--text-color);
   cursor: pointer;
   display: flex;
   align-items: center;

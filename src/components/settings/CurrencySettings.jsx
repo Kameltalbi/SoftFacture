@@ -139,7 +139,7 @@ const CurrencySettings = () => {
             </Form.Item>
 
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <Button type="primary" icon={<SaveOutlined />} htmlType="submit">
+              <Button type="primary" icon={<SaveOutlined />} htmlType="submit" style={{backgroundColor: Colors.PRIMARY}}>
                 {t("components.currencySettings.save")}
               </Button>
               <Button icon={<CloseOutlined />} onClick={() => setEditingKey(null)}>
@@ -227,6 +227,7 @@ const CurrencySettings = () => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setAddFormVisible(true)}
+            style={{backgroundColor: Colors.PRIMARY}}
           >
             {t("components.currencySettings.addButton")}
           </Button>
@@ -288,7 +289,7 @@ const CurrencySettings = () => {
             </Row>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+              <Button type="primary" htmlType="submit" icon={<SaveOutlined />} style={{backgroundColor: Colors.PRIMARY}}>
                 {t("components.currencySettings.save")}
               </Button>
               <Button

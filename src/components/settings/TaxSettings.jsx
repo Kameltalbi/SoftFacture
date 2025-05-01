@@ -1,9 +1,29 @@
 import React, { useState } from "react";
-import { Card, Form, Input, InputNumber, Button, Popconfirm, message, Row, Col, Switch } from "antd";
-import { PlusOutlined, SaveOutlined, EditOutlined, CloseOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  Card,
+  Form,
+  Input,
+  InputNumber,
+  Button,
+  message,
+  Row,
+  Col,
+  Switch,
+} from "antd";
+import {
+  PlusOutlined,
+  SaveOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { addTax, updateTax, deleteTax, selectTaxes } from "../../container/redux/slices/settingsSlice";
+import {
+  addTax,
+  updateTax,
+  deleteTax,
+  selectTaxes,
+} from "../../container/redux/slices/settingsSlice";
 import * as Colors from "../../utils/constants/colors";
 
 const TaxSettings = () => {
@@ -19,11 +39,11 @@ const TaxSettings = () => {
 
   const handleAddTax = (values) => {
     const newKey = Date.now().toString();
-    const newTax = { 
-      key: newKey, 
-      name: values.name, 
-      value: values.value, 
-      type: values.type ? 'percentage' : 'fixed' 
+    const newTax = {
+      key: newKey,
+      name: values.name,
+      value: values.value,
+      type: values.type ? "percentage" : "fixed",
     };
     dispatch(addTax(newTax));
     message.success(t("components.taxSettings.addSuccess"));
@@ -36,7 +56,7 @@ const TaxSettings = () => {
       key,
       name: values.name,
       value: values.value,
-      type: values.type ? 'percentage' : 'fixed'
+      type: values.type ? "percentage" : "fixed",
     };
     dispatch(updateTax(updatedTax));
     message.success(t("components.taxSettings.updateSuccess"));
@@ -55,7 +75,7 @@ const TaxSettings = () => {
           initialValues={{
             name: tax.name,
             value: tax.value,
-            type: tax.type === 'percentage'
+            type: tax.type === "percentage",
           }}
           onFinish={(values) => handleUpdateTax(tax.key, values)}
           layout="vertical"
@@ -69,10 +89,20 @@ const TaxSettings = () => {
               backgroundColor: Colors.LIGHT_GRAY,
             }}
             actions={[
-              <Button type="primary" icon={<SaveOutlined />} htmlType="submit" size="small">
+              <Button
+                type="primary"
+                icon={<SaveOutlined />}
+                htmlType="submit"
+                size="small"
+                style={{ backgroundColor: Colors.PRIMARY }}
+              >
                 {t("components.taxSettings.save")}
               </Button>,
-              <Button icon={<CloseOutlined />} onClick={() => setEditingKey(null)} size="small">
+              <Button
+                icon={<CloseOutlined />}
+                onClick={() => setEditingKey(null)}
+                size="small"
+              >
                 {t("components.taxSettings.cancel")}
               </Button>,
             ]}
@@ -80,15 +110,27 @@ const TaxSettings = () => {
             <Form.Item
               name="name"
               label={t("components.taxSettings.nameColumn")}
-              rules={[{ required: true, message: t("components.taxSettings.nameRequired") }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("components.taxSettings.nameRequired"),
+                },
+              ]}
             >
-              <Input placeholder={t("components.taxSettings.namePlaceholder")} />
+              <Input
+                placeholder={t("components.taxSettings.namePlaceholder")}
+              />
             </Form.Item>
 
             <Form.Item
               name="value"
               label={t("components.taxSettings.valueColumn")}
-              rules={[{ required: true, message: t("components.taxSettings.valueRequired") }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("components.taxSettings.valueRequired"),
+                },
+              ]}
             >
               <InputNumber
                 min={0}
@@ -122,12 +164,28 @@ const TaxSettings = () => {
             marginBottom: 16,
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-            <h3 style={{ fontSize: 18, fontWeight: 500, margin: 0, color: Colors.SECONDARY }}>{tax.name}</h3>
-            <Button 
-              type="text" 
-              icon={<DeleteOutlined />} 
-              danger 
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 8,
+            }}
+          >
+            <h3
+              style={{
+                fontSize: 18,
+                fontWeight: 500,
+                margin: 0,
+                color: Colors.SECONDARY,
+              }}
+            >
+              {tax.name}
+            </h3>
+            <Button
+              type="text"
+              icon={<DeleteOutlined />}
+              danger
               size="small"
               onClick={() => handleDeleteTax(tax.key)}
               style={{ width: 28, height: 28 }}
@@ -136,10 +194,14 @@ const TaxSettings = () => {
 
           <div style={{ fontSize: 16, color: Colors.DARK_GRAY }}>
             <p style={{ marginBottom: 4 }}>
-              <strong>{t("components.taxSettings.valueLabel")}:</strong> {tax.value} {tax.type === 'percentage' ? '%' : '€'}
+              <strong>{t("components.taxSettings.valueLabel")}:</strong>{" "}
+              {tax.value} {tax.type === "percentage" ? "%" : "€"}
             </p>
             <p style={{ marginBottom: 0 }}>
-              <strong>{t("components.taxSettings.typeLabel")}:</strong> {tax.type === 'percentage' ? t("components.taxSettings.percentage") : t("components.taxSettings.fixed")}
+              <strong>{t("components.taxSettings.typeLabel")}:</strong>{" "}
+              {tax.type === "percentage"
+                ? t("components.taxSettings.percentage")
+                : t("components.taxSettings.fixed")}
             </p>
           </div>
         </Card>
@@ -163,6 +225,9 @@ const TaxSettings = () => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setAddFormVisible(true)}
+            style={{
+              backgroundColor: Colors.PRIMARY,
+            }}
           >
             {t("components.taxSettings.addButton")}
           </Button>
@@ -170,14 +235,26 @@ const TaxSettings = () => {
           <Form form={form} onFinish={handleAddTax} layout="inline">
             <Form.Item
               name="name"
-              rules={[{ required: true, message: t("components.taxSettings.nameRequired") }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("components.taxSettings.nameRequired"),
+                },
+              ]}
             >
-              <Input placeholder={t("components.taxSettings.namePlaceholder")} />
+              <Input
+                placeholder={t("components.taxSettings.namePlaceholder")}
+              />
             </Form.Item>
 
             <Form.Item
               name="value"
-              rules={[{ required: true, message: t("components.taxSettings.valueRequired") }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("components.taxSettings.valueRequired"),
+                },
+              ]}
             >
               <InputNumber
                 min={0}
@@ -185,11 +262,7 @@ const TaxSettings = () => {
               />
             </Form.Item>
 
-            <Form.Item
-              name="type"
-              valuePropName="checked"
-              initialValue={false}
-            >
+            <Form.Item name="type" valuePropName="checked" initialValue={false}>
               <Switch
                 checkedChildren={t("components.taxSettings.percentage")}
                 unCheckedChildren={t("components.taxSettings.fixed")}
@@ -197,10 +270,21 @@ const TaxSettings = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                icon={<SaveOutlined />}
+                style={{
+                  backgroundColor: Colors.PRIMARY,
+                }}
+              >
                 {t("components.taxSettings.save")}
               </Button>
-              <Button style={{ marginLeft: 8 }} icon={<CloseOutlined />} onClick={() => setAddFormVisible(false)}>
+              <Button
+                style={{ marginLeft: 8 }}
+                icon={<CloseOutlined />}
+                onClick={() => setAddFormVisible(false)}
+              >
                 {t("components.taxSettings.cancel")}
               </Button>
             </Form.Item>

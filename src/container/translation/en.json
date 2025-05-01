@@ -64,7 +64,6 @@
       "deleteSuccess": "Currency deleted successfully!",
       "save": "Save",
       "cancel": "Cancel",
-
       "nameLabel": "Currency Name",
       "namePlaceholder": "Enter currency name",
       "nameRequired": "Currency name is required",
@@ -74,18 +73,16 @@
       "codeLabel": "Currency Code",
       "codePlaceholder": "Enter currency code (e.g., USD)",
       "codeRequired": "Currency code is required",
-
       "symbolLabel": "Currency Symbol",
       "symbolPlaceholder": "Enter currency symbol (e.g., $)",
       "symbolRequired": "Currency symbol is required",
-
       "exchangeRateLabel": "Exchange Rate",
       "exchangeRatePlaceholder": "Enter exchange rate",
       "exchangeRateRequired": "Exchange rate is required",
       "edit": "Edit",
       "delete": "Delete"
     },
-   "invoiceNumberSettings": {
+    "invoiceNumberSettings": {
       "cardTitle": "Invoice Numbering Settings",
       "prefixLabel": "Prefix",
       "suffixLabel": "Suffix",
@@ -102,6 +99,25 @@
       "previewDescription": "This preview shows how your next invoice number will look based on the selected settings.",
       "saveButton": "Save Settings",
       "saveSuccess": "Invoice numbering settings updated successfully"
+    },
+    "clientForm": {
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "Enter full name",
+      "fullNameRequired": "Full name is required",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter email address",
+      "emailRequired": "Valid email is required",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "Enter phone number",
+      "phoneRequired": "Phone number is required",
+      "companyLabel": "Company",
+      "companyPlaceholder": "Enter company name",
+      "fiscalIdLabel": "Fiscal ID",
+      "fiscalIdPlaceholder": "Enter fiscal ID",
+      "addressLabel": "Address",
+      "addressPlaceholder": "Enter address",
+      "addressRequired": "Address is required",
+      "submitButton": "Submit"
     }
   },
   "screens": {
@@ -125,6 +141,16 @@
       "loginFailed": "Login failed. Please check your credentials."
     },
     "dashboard": {},
-    "client": {}
+    "client": {
+      "title": "Clients",
+      "createTitle": "Create Client",
+      "editTitle": "Edit Client",
+      "addNew": "Add New Client",
+      "notFound": "Client not found.",
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    }
   }
 }

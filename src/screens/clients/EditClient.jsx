@@ -5,8 +5,10 @@ import { updateClient } from "../../container/redux/slices/clientsSlice";
 import ClientForm from "../../components/clients/ClientForm";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import { useTranslation } from "react-i18next";
 
 const EditClient = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const EditClient = () => {
     navigate("/clients");
   };
 
-  if (!client) return <div style={{ padding: "24px" }}>Client not found.</div>;
+  if (!client) return <div style={{ padding: "24px" }}>{t("screens.client.notFound")}</div>;
 
   return (
     <div style={{ padding: "24px" }}>
@@ -35,17 +37,15 @@ const EditClient = () => {
           style={{
             width: "48px",
             height: "48px",
-            fontSize: "20px", // make the arrow icon bigger
+            fontSize: "20px",
             marginBottom: "8px",
             backgroundColor: "#fff",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
             border: "none",
           }}
         />
-        <h1
-          style={{ fontSize: "24px", fontWeight: "bold", marginLeft: "16px" }}
-        >
-          Edit Client
+        <h1 style={{ fontSize: "24px", fontWeight: "bold", marginLeft: "16px" }}>
+          {t("screens.client.editTitle")}
         </h1>
       </div>
       <ClientForm initialValues={client} onFinish={handleSubmit} />

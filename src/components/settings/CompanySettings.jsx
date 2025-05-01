@@ -4,6 +4,7 @@ import { SaveOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { setCompanyInfo, setLoading, selectCompanyInfo } from '../../container/redux/slices/settingsSlice';
+import { PRIMARY } from "../../utils/constants/colors";
 
 const { TextArea } = Input;
 
@@ -97,6 +98,7 @@ const CompanyInfoSettings = () => {
               type="primary"
               htmlType="submit"
               loading={isLoading}
+              style={{ backgroundColor: PRIMARY }}
               icon={<SaveOutlined />}
             >
               {t("components.companySettings.saveButton")}
