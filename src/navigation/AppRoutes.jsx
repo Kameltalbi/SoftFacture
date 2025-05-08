@@ -8,6 +8,8 @@ import EditClient from "../screens/clients/EditClient";
 import NotFoundPage from "../screens/notfound/NotFoundScreen";
 import PrivateLayout from "../navigation/PrivateLayout";
 import SettingsScreen from "../screens/settings/SettingsScreen";
+import InvoiceScreen from "../screens/Invoice/InvoiceScreen";
+import CreateInvoice from "../screens/Invoice/CreateInvoice";
 
 const AppRoutes = () => {
   return (
@@ -59,6 +61,22 @@ const AppRoutes = () => {
           }
         />
 
+        <Route
+          path="/invoices"
+          element={
+            <PrivateLayout>
+              <InvoiceScreen />
+            </PrivateLayout>
+          }
+        />
+        <Route
+          path="/invoices/new"
+          element={
+            <PrivateLayout>
+              <CreateInvoice />
+            </PrivateLayout>
+          }
+        />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

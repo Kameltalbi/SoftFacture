@@ -59,8 +59,8 @@ const LoginScreen = () => {
             layout="vertical"
             onFinish={onFinish}
             initialValues={{
-              email: "admin",
-              password: "admin",
+              email: "yassinhakiri@gmail.com",
+              password: "Cbcd328!",
             }}
             onFinishFailed={onFinishFailed}
             style={{ marginTop: 24 }}

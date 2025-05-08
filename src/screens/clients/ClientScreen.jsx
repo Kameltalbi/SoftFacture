@@ -25,8 +25,9 @@ const ClientScreen = () => {
     { title: t("components.clientForm.companyLabel"), dataIndex: "company", key: "company" },
     { title: t("components.clientForm.fiscalIdLabel"), dataIndex: "fiscalId", key: "fiscalId" },
     {
-      title: t("screens.client.actions.edit"),
+      title: "",
       key: "actions",
+      width:50,
       render: (_, record) => (
         <ActionsDropdown
           menuItems={[

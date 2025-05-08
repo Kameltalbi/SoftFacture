@@ -12,7 +12,7 @@ export const loginUser = createAsyncThunk(
     return new Promise((resolve, reject) => {
       console.info("Logging in with:", { email, password });
       setTimeout(() => {
-        if (email === "admin" && password === "admin") {
+        if (email === "yassinhakiri@gmail.com" && password === "Cbcd328!") {
           resolve({ user: "admin", token: "fake_token_123" });
         } else {
           reject(new Error("Invalid credentials"));

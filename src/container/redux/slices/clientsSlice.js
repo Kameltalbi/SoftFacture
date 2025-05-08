@@ -1,12 +1,20 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
-  clients: [],
+  clients: [
+    {
+      id: "8Dyp_4fboOainKPMeSa2n",
+      fullName: "Client Test",
+      email: "client@test.com",
+      phone: "123456789",
+      address: "The address",
+    },
+  ],
   loading: false,
 };
 
 const clientsSlice = createSlice({
-  name: 'clients',
+  name: "clients",
   initialState,
   reducers: {
     addClient: (state, action) => {
@@ -14,13 +22,17 @@ const clientsSlice = createSlice({
       state.clients.push(newClient);
     },
     updateClient: (state, action) => {
-      const index = state.clients.findIndex(client => client.id === action.payload.id);
+      const index = state.clients.findIndex(
+        (client) => client.id === action.payload.id
+      );
       if (index !== -1) {
         state.clients[index] = action.payload;
       }
     },
     deleteClient: (state, action) => {
-      state.clients = state.clients.filter(client => client.id !== action.payload);
+      state.clients = state.clients.filter(
+        (client) => client.id !== action.payload
+      );
     },
   },
 });

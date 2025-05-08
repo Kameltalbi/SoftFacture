@@ -121,8 +121,8 @@ const Sidebar = () => {
 
       {/* Menu */}
       <div className="sidebar-menu">
-        {menuGroups.map((group) => (
-          <div key={group.title}>
+        {menuGroups.map((group, index) => (
+          <div key={index}>
             {expanded && (
               <div className="sidebar-group-title">{group.title}</div>
             )}
