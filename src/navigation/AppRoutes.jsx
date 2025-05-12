@@ -10,6 +10,13 @@ import PrivateLayout from "../navigation/PrivateLayout";
 import SettingsScreen from "../screens/settings/SettingsScreen";
 import InvoiceScreen from "../screens/Invoice/InvoiceScreen";
 import CreateInvoice from "../screens/Invoice/CreateInvoice";
+import SupplierScreen from "../screens/suppliers/SupplierScreen";
+import CreateSupplier from "../screens/suppliers/CreateSupplier";
+import EditSupplier from "../screens/suppliers/EditSupplier";
+import CategoriesScreen from "../screens/category/CategoriesScreen";
+import ProductsScreen from "../screens/products/ProductsScreen";
+import QuotesScreen from "../screens/quotes/QuoteScreen";
+import CreateQuotes from "../screens/quotes/CreateQuotes";
 
 const AppRoutes = () => {
   return (
@@ -70,6 +77,22 @@ const AppRoutes = () => {
           }
         />
         <Route
+          path="/quotes"
+          element={
+            <PrivateLayout>
+              <QuotesScreen />
+            </PrivateLayout>
+          }
+        />
+        <Route
+          path="/quotes/new"
+          element={
+            <PrivateLayout>
+              <CreateQuotes />
+            </PrivateLayout>
+          }
+        />
+        <Route
           path="/invoices/new"
           element={
             <PrivateLayout>
@@ -77,6 +100,50 @@ const AppRoutes = () => {
             </PrivateLayout>
           }
         />
+        <Route
+          path="/suppliers"
+          element={
+            <PrivateLayout>
+              <SupplierScreen />
+            </PrivateLayout>
+          }
+        />
+        <Route
+          path="/suppliers/create"
+          element={
+            <PrivateLayout>
+              <CreateSupplier />
+            </PrivateLayout>
+          }
+        />
+
+        <Route
+          path="/suppliers/edit/:id"
+          element={
+            <PrivateLayout>
+              <EditSupplier />
+            </PrivateLayout>
+          }
+        />
+
+        <Route
+          path="/categories"
+          element={
+            <PrivateLayout>
+              <CategoriesScreen />
+            </PrivateLayout>
+          }
+        />
+
+        <Route
+          path="/products"
+          element={
+            <PrivateLayout>
+              <ProductsScreen />
+            </PrivateLayout>
+          }
+        />
+
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

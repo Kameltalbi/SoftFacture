@@ -8,6 +8,9 @@ import {
   FileText,
   FileSpreadsheet,
   Package2,
+  Boxes,
+  Package,
+  Warehouse,
   Users,
   Settings,
   Menu as MenuIcon,
@@ -70,6 +73,26 @@ const Sidebar = () => {
           key: "suppliers",
           label: t("components.sidebar.suppliers"),
           icon: Users,
+        },
+      ],
+    },
+    {
+      title: t("components.sidebar.products"),
+      items: [
+        {
+          key: "categories",
+          label: t("components.sidebar.categories"),
+          icon: Boxes,
+        },
+        {
+          key: "products",
+          label: t("components.sidebar.products"),
+          icon: Package,
+        },
+        {
+          key: "stock",
+          label: t("components.sidebar.stock"),
+          icon: Warehouse,
         },
       ],
     },

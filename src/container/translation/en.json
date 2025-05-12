@@ -12,7 +12,10 @@
       "clients": "Clients",
       "suppliers": "Suppliers",
       "settingsLabel": "Settings",
-      "taxId": "Tax ID"
+      "taxId": "Tax ID",
+      "products": "Products",
+      "categories": "Categories",
+      "stock": "Stock"
     },
     "companySettings": {
       "cardTitle": "Company Information",
@@ -179,6 +182,50 @@
       "cancel": "Cancel",
       "edit": "Edit",
       "save": "Save"
+    },
+    "quoteForm": {
+      "client": "Client",
+      "clientRequired": "Please select a client.",
+      "selectClient": "Select a client",
+      "email": "Email",
+      "emailPlaceholder": "Enter client email",
+      "address": "Address",
+      "addressPlaceholder": "Enter address",
+      "quoteNumber": "Quote Number",
+      "quoteNumberPlaceholder": "e.g. Q-2025-001",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter phone number",
+      "taxNumber": "Tax Number",
+      "taxNumberPlaceholder": "Enter tax number",
+      "articles": "Quote Lines",
+      "addArticle": "Add Line",
+      "reference": "Reference",
+      "selectReference": "Select reference",
+      "description": "Description",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "discount": "Discount",
+      "vat": "VAT",
+      "totalHT": "Total (HT)",
+      "previewButton": "Preview Quote"
+    },
+    "quotePreview": {
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "save": "Save",
+      "date": "Date: ",
+      "billedTo": "Billed To",
+      "reference": "Reference",
+      "description": "Description",
+      "quantity": "Qty",
+      "unitPrice": "Unit Price",
+      "discount": "Discount",
+      "vat": "VAT",
+      "totalHT": "Total (HT)",
+      "totalHTLabel": "Total (HT)",
+      "baseVatLabel": "Base for VAT",
+      "totalVatLabel": "VAT Amount",
+      "netToPayLabel": "Net to Pay"
     }
   },
   "screens": {
@@ -240,6 +287,85 @@
         "deleteSuccess": "Invoice with id {{id}} deleted"
       },
       "createTitle": "Create Invoice"
+    },
+    "supplier": {
+      "title": "Suppliers",
+      "createTitle": "Create Supplier",
+      "editTitle": "Edit Supplier",
+      "addNew": "Add New Supplier",
+      "notFound": "Supplier not found.",
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "categories": {
+      "title": "Categories",
+      "addNew": "Add New",
+      "addTitle": "Add Category",
+      "editTitle": "Edit Category",
+      "name": "Name",
+      "description": "Description",
+      "nameRequired": "Please enter a category name.",
+      "save": "Save",
+      "cancel": "Cancel",
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "products": {
+      "title": "Products",
+      "addNew": "Add New",
+      "addTitle": "Add Product",
+      "editTitle": "Edit Product",
+      "productId": "Product ID",
+      "name": "Product Name",
+      "nameRequired": "Please enter a product name.",
+      "description": "Description",
+      "unit": "Unit",
+      "unitRequired": "Please enter a unit.",
+      "category": "Category",
+      "categoryRequired": "Please select a category.",
+      "selectCategory": "Select a category",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "discount": "Discount",
+      "taxRate": "Tax Rate (%)",
+      "save": "Save",
+      "cancel": "Cancel",
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "quote": {
+      "title": "Quotes",
+      "createTitle": "Create Quote",
+      "newQuoteButton": "New Quote",
+      "searchPlaceholder": "Search by number or client",
+      "filterStatusPlaceholder": "Filter by status",
+      "loading": "Loading quotes...",
+      "messages": {
+        "deleteSuccess": "Quote #{id} deleted successfully."
+      },
+      "columns": {
+        "number": "Quote #",
+        "client": "Client",
+        "issueDate": "Issue Date",
+        "dueDate": "Due Date",
+        "amount": "Amount",
+        "status": "Status"
+      },
+      "menu": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "status": {
+        "accepted": "Accepted",
+        "pending": "Pending",
+        "rejected": "Rejected"
+      }
     }
   }
 }
