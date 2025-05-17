@@ -1,0 +1,67 @@
+.invoice-preview-scrollable {
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+  
+  /* Layout for invoice content container */
+  .invoice-preview-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 32px;
+    margin: 0 16px 24px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Header with title and date */
+  .invoice-header {
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+  }
+  
+  /* Client info section */
+  .invoice-client-info {
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  
+  /* Invoice article table */
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  
+  .invoice-table th,
+  .invoice-table td {
+    padding: 8px;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+  }
+  
+  /* Summary section aligned to the right */
+  .invoice-summary {
+    margin-top: 48px;
+    width: 50%;
+    font-size: 14px;
+    margin-left: auto;
+  }
+  
+  /* Each line in the summary */
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-top-width: 1px;
+    border-top-style: solid;
+  }
+  
+  /* Bold summary line for net total */
+  .summary-line.bold {
+    font-weight: bold;
+    border-top-width: 2px;
+  }
+  
