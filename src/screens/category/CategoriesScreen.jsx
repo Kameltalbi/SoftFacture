@@ -2,71 +2,58 @@ import React, { useState } from "react";
 import { Table, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  deleteProduct,
-  addProduct,
-  updateProduct,
-} from "../../container/redux/slices/productsSlice";
+  deleteCategory,
+  addCategory,
+  updateCategory,
+} from "../../container/redux/slices/categoriesSlice";
 import { useTranslation } from "react-i18next";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import ProductDrawerForm from "../../components/products/ProductDrawerForm";
+import CategoryDrawerForm from "../../components/categories/CategoryDrawerForm";
 import ActionsDropdown from "../../components/common/ActionsDropdown";
 import { PRIMARY } from "../../utils/constants/colors";
 
-const ProductsScreen = () => {
+const CategoriesScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.products);
   const { categories } = useSelector((state) => state.categories);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleAdd = () => {
-    setSelectedProduct(null);
+    setSelectedCategory(null);
     setDrawerOpen(true);
   };
 
   const handleEdit = (record) => {
-    setSelectedProduct(record);
+    setSelectedCategory(record);
     setDrawerOpen(true);
   };
 
   const handleSubmit = (values) => {
-    if (selectedProduct) {
-      dispatch(updateProduct({ id: selectedProduct.id, ...values }));
+    if (selectedCategory) {
+      dispatch(updateCategory({ id: selectedCategory.id, ...values }));
     } else {
-      dispatch(addProduct(values));
+      dispatch(addCategory(values));
     }
     setDrawerOpen(false);
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteProduct(id));
+    dispatch(deleteCategory(id));
   };
 
   const columns = [
-    { title: t("screens.products.name"), dataIndex: "name", key: "name" },
     {
-      title: t("screens.products.description"),
+      title: t("screens.categories.name"),
+      dataIndex: "name",
+      key: "name",
+      width: 250,
+    },
+    {
+      title: t("screens.categories.description"),
       dataIndex: "description",
       key: "description",
-    },
-    {
-      title: t("screens.products.category"),
-      dataIndex: "categoryId",
-      key: "categoryId",
-      render: (id) => categories.find((c) => c.id === id)?.name || "--",
-    },
-    {
-      title: t("screens.products.unitPrice"),
-      dataIndex: "unitPrice",
-      key: "unitPrice",
-    },
-    {
-      title: t("screens.products.taxRate"),
-      dataIndex: "vat",
-      key: "vat",
-      render: (rate) => `${rate}%`,
     },
     {
       title: "",
@@ -77,13 +64,13 @@ const ProductsScreen = () => {
           menuItems={[
             {
               key: "edit",
-              label: t("screens.products.actions.edit"),
+              label: t("screens.categories.actions.edit"),
               icon: <EditOutlined />,
               onClick: () => handleEdit(record),
             },
             {
               key: "delete",
-              label: t("screens.products.actions.delete"),
+              label: t("screens.categories.actions.delete"),
               icon: <DeleteOutlined />,
               danger: true,
               onClick: () => handleDelete(record.id),
@@ -93,6 +80,7 @@ const ProductsScreen = () => {
       ),
     },
   ];
+
   return (
     <div style={{ padding: "24px" }}>
       <div
@@ -103,27 +91,27 @@ const ProductsScreen = () => {
         }}
       >
         <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>
-          {t("screens.products.title")}
+          {t("screens.categories.title")}
         </h1>
         <Button
           type="primary"
           onClick={handleAdd}
           style={{ backgroundColor: PRIMARY }}
         >
-          {t("screens.products.addNew")}
+          {t("screens.categories.addNew")}
         </Button>
       </div>
 
-      <Table dataSource={products} columns={columns} rowKey="id" />
+      <Table dataSource={categories} columns={columns} rowKey="id" />
 
-      <ProductDrawerForm
+      <CategoryDrawerForm
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         onSubmit={handleSubmit}
-        initialValues={selectedProduct}
+        initialValues={selectedCategory}
       />
     </div>
   );
 };
 
-export default ProductsScreen;
+export default CategoriesScreen;

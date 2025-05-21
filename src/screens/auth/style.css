@@ -1,0 +1,44 @@
+/* src/pages/LoginScreen/style.css */
+
+.login-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-left, .login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-right {
+  flex: 1.2;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 480px;
+  padding: 3rem 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  border-radius: 1rem;
+}
+
+.forgot-pass {
+  text-align: right;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.signup-link {
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.login-illustration {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+}
