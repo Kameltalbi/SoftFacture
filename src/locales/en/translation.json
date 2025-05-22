@@ -1,0 +1,36 @@
+{
+  "screens": {
+    "products": {
+      "title": "Products",
+      "createTitle": "Add Product",
+      "editTitle": "Edit Product",
+      "name": "Name",
+      "namePlaceholder": "Enter product name",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter product description",
+      "category": "Category",
+      "categoryPlaceholder": "Select a category",
+      "price": "Price",
+      "pricePlaceholder": "Enter product price",
+      "tva": "TVA (%)",
+      "tvaPlaceholder": "Enter TVA rate",
+      "validation": {
+        "nameRequired": "Please enter the product name",
+        "descriptionRequired": "Please enter the product description",
+        "categoryRequired": "Please select a category",
+        "priceRequired": "Please enter the product price",
+        "tvaRequired": "Please enter the TVA rate",
+        "nameMaxLength": "Name cannot exceed 255 characters",
+        "descriptionMaxLength": "Description cannot exceed 1000 characters"
+      },
+      "messages": {
+        "createSuccess": "Product created successfully",
+        "updateSuccess": "Product updated successfully",
+        "deleteSuccess": "Product deleted successfully",
+        "createError": "Failed to create product",
+        "updateError": "Failed to update product",
+        "deleteError": "Failed to delete product"
+      }
+    }
+  }
+} 

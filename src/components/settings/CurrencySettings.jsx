@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Form,
@@ -9,6 +9,10 @@ import {
   message,
   Row,
   Col,
+  Spin,
+  Alert,
+  Grid,
+  Space,
 } from "antd";
 import {
   PlusOutlined,
@@ -20,68 +24,98 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addCurrency,
+  fetchCurrencies,
+  createCurrency,
   updateCurrency,
   deleteCurrency,
   selectCurrencies,
+  selectLoading,
+  selectError,
+  clearError,
 } from "../../container/redux/slices/settingsSlice";
 import * as Colors from "../../utils/constants/colors";
+
+const { useBreakpoint } = Grid;
 
 const CurrencySettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
+
   const currencies = useSelector(selectCurrencies);
+  const isLoading = useSelector(selectLoading);
+  const error = useSelector(selectError);
 
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState(null);
   const [addFormVisible, setAddFormVisible] = useState(false);
 
-  const isEditing = (key) => editingKey === key;
+  useEffect(() => {
+    // Fetch currencies when component mounts
+    dispatch(fetchCurrencies());
 
-  const handleAddCurrency = (values) => {
-    const newKey = Date.now().toString();
-    const newCurrency = {
-      key: newKey,
-      name: values.name,
-      code: values.code,
-      symbol: values.symbol,
-      exchangeRate: values.exchangeRate,
+    // Clear error when component unmounts
+    return () => {
+      dispatch(clearError());
     };
-    dispatch(addCurrency(newCurrency));
-    message.success(t("components.currencySettings.addSuccess"));
-    form.resetFields();
-    setAddFormVisible(false);
+  }, [dispatch]);
+
+  const isEditing = (id) => editingKey === id;
+
+  const handleAddCurrency = async (values) => {
+    try {
+      const currencyData = {
+        name: values.name,
+        code: values.code,
+        symbole: values.symbol,
+        taux: values.exchangeRate,
+      };
+      await dispatch(createCurrency(currencyData)).unwrap();
+      message.success(t("components.currencySettings.addSuccess"));
+      form.resetFields();
+      setAddFormVisible(false);
+    } catch (error) {
+      message.error(error || t("components.currencySettings.addError"));
+    }
   };
 
-  const handleUpdateCurrency = (key, values) => {
-    const updatedCurrency = {
-      key,
-      name: values.name,
-      code: values.code,
-      symbol: values.symbol,
-      exchangeRate: values.exchangeRate,
-    };
-    dispatch(updateCurrency(updatedCurrency));
-    message.success(t("components.currencySettings.updateSuccess"));
-    setEditingKey(null);
+  const handleUpdateCurrency = async (id, values) => {
+    try {
+      const currencyData = {
+        name: values.name,
+        code: values.code,
+        symbole: values.symbol,
+        taux: values.exchangeRate,
+      };
+      await dispatch(updateCurrency({ id, currencyData })).unwrap();
+      message.success(t("components.currencySettings.updateSuccess"));
+      setEditingKey(null);
+    } catch (error) {
+      message.error(error || t("components.currencySettings.updateError"));
+    }
   };
 
-  const handleDeleteCurrency = (key) => {
-    dispatch(deleteCurrency(key));
-    message.success(t("components.currencySettings.deleteSuccess"));
+  const handleDeleteCurrency = async (id) => {
+    try {
+      await dispatch(deleteCurrency(id)).unwrap();
+      message.success(t("components.currencySettings.deleteSuccess"));
+    } catch (error) {
+      message.error(error || t("components.currencySettings.deleteError"));
+    }
   };
 
   const renderCurrencyCard = (currency) => {
-    if (isEditing(currency.key)) {
+    if (isEditing(currency.id)) {
       return (
         <Form
           initialValues={{
             name: currency.name,
             code: currency.code,
-            symbol: currency.symbol,
-            exchangeRate: currency.exchangeRate,
+            symbol: currency.symbole,
+            exchangeRate: currency.taux,
           }}
-          onFinish={(values) => handleUpdateCurrency(currency.key, values)}
+          onFinish={(values) => handleUpdateCurrency(currency.id, values)}
           layout="vertical"
         >
           <Card
@@ -89,7 +123,7 @@ const CurrencySettings = () => {
             style={{
               borderRadius: 12,
               marginBottom: 16,
-              padding: 12,
+              padding: isMobile ? 8 : 12,
               backgroundColor: Colors.LIGHT_GRAY,
             }}
           >
@@ -100,7 +134,10 @@ const CurrencySettings = () => {
                 { required: true, message: t("components.currencySettings.nameRequired") },
               ]}
             >
-              <Input placeholder={t("components.currencySettings.namePlaceholder")} />
+              <Input 
+                placeholder={t("components.currencySettings.namePlaceholder")}
+                size={isMobile ? "middle" : "large"}
+              />
             </Form.Item>
 
             <Form.Item
@@ -110,7 +147,10 @@ const CurrencySettings = () => {
                 { required: true, message: t("components.currencySettings.codeRequired") },
               ]}
             >
-              <Input placeholder={t("components.currencySettings.codePlaceholder")} />
+              <Input 
+                placeholder={t("components.currencySettings.codePlaceholder")}
+                size={isMobile ? "middle" : "large"}
+              />
             </Form.Item>
 
             <Form.Item
@@ -120,7 +160,10 @@ const CurrencySettings = () => {
                 { required: true, message: t("components.currencySettings.symbolRequired") },
               ]}
             >
-              <Input placeholder={t("components.currencySettings.symbolPlaceholder")} />
+              <Input 
+                placeholder={t("components.currencySettings.symbolPlaceholder")}
+                size={isMobile ? "middle" : "large"}
+              />
             </Form.Item>
 
             <Form.Item
@@ -135,17 +178,36 @@ const CurrencySettings = () => {
                 step={0.01}
                 style={{ width: "100%" }}
                 placeholder={t("components.currencySettings.exchangeRatePlaceholder")}
+                size={isMobile ? "middle" : "large"}
               />
             </Form.Item>
 
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <Button type="primary" icon={<SaveOutlined />} htmlType="submit" style={{backgroundColor: Colors.PRIMARY}}>
+            <Space 
+              direction={isMobile ? "vertical" : "horizontal"} 
+              style={{ width: '100%', justifyContent: 'flex-end' }}
+              size={isMobile ? 8 : 16}
+            >
+              <Button 
+                type="primary" 
+                icon={<SaveOutlined />} 
+                htmlType="submit" 
+                style={{
+                  backgroundColor: Colors.PRIMARY,
+                  width: isMobile ? '100%' : 'auto'
+                }}
+                size={isMobile ? "middle" : "large"}
+              >
                 {t("components.currencySettings.save")}
               </Button>
-              <Button icon={<CloseOutlined />} onClick={() => setEditingKey(null)}>
+              <Button 
+                icon={<CloseOutlined />} 
+                onClick={() => setEditingKey(null)}
+                size={isMobile ? "middle" : "large"}
+                style={{ width: isMobile ? '100%' : 'auto' }}
+              >
                 {t("components.currencySettings.cancel")}
               </Button>
-            </div>
+            </Space>
           </Card>
         </Form>
       );
@@ -155,7 +217,7 @@ const CurrencySettings = () => {
           bordered
           style={{
             borderRadius: 12,
-            padding: 16,
+            padding: isMobile ? 12 : 16,
             backgroundColor: Colors.WHITE,
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
             marginBottom: 24,
@@ -168,7 +230,7 @@ const CurrencySettings = () => {
             marginBottom: 8,
           }}>
             <h3 style={{
-              fontSize: 18,
+              fontSize: isMobile ? 16 : 18,
               fontWeight: 600,
               margin: 0,
               color: Colors.SECONDARY,
@@ -176,17 +238,17 @@ const CurrencySettings = () => {
               {currency.name}
             </h3>
 
-            <div style={{ display: "flex", gap: 8 }}>
+            <Space size={8}>
               <Button
                 type="text"
                 icon={<EditOutlined />}
                 size="small"
-                onClick={() => setEditingKey(currency.key)}
+                onClick={() => setEditingKey(currency.id)}
                 style={{ width: 28, height: 28, color: Colors.PRIMARY }}
               />
               <Popconfirm
                 title={t("components.currencySettings.confirmDelete")}
-                onConfirm={() => handleDeleteCurrency(currency.key)}
+                onConfirm={() => handleDeleteCurrency(currency.id)}
                 okText={t("components.currencySettings.yes")}
                 cancelText={t("components.currencySettings.no")}
               >
@@ -198,28 +260,51 @@ const CurrencySettings = () => {
                   style={{ width: 28, height: 28 }}
                 />
               </Popconfirm>
-            </div>
+            </Space>
           </div>
 
-          <div style={{ fontSize: 15, color: Colors.DARK_GRAY }}>
+          <div style={{ 
+            fontSize: isMobile ? 14 : 15, 
+            color: Colors.DARK_GRAY 
+          }}>
             <p><strong>{t("components.currencySettings.codeLabel")}:</strong> {currency.code}</p>
-            <p><strong>{t("components.currencySettings.symbolLabel")}:</strong> {currency.symbol}</p>
-            <p><strong>{t("components.currencySettings.exchangeRateLabel")}:</strong> {currency.exchangeRate}</p>
+            <p><strong>{t("components.currencySettings.symbolLabel")}:</strong> {currency.symbole}</p>
+            <p><strong>{t("components.currencySettings.exchangeRateLabel")}:</strong> {currency.taux}</p>
           </div>
         </Card>
       );
     }
   };
 
+  if (isLoading && !currencies.length) {
+    return (
+      <div style={{ padding: isMobile ? 16 : 24, textAlign: 'center' }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: isMobile ? 0 : 24 }}>
+      {error && (
+        <Alert
+          message={error}
+          type="error"
+          showIcon
+          style={{ marginBottom: isMobile ? 16 : 24 }}
+          closable
+          onClose={() => dispatch(clearError())}
+        />
+      )}
+
       <Card
         title={t("components.currencySettings.cardTitle")}
         style={{
           borderRadius: 8,
           backgroundColor: Colors.WHITE,
           boxShadow: `0 2px 8px ${Colors.LIGHT_GRAY}`,
-          marginBottom: 24,
+          marginBottom: isMobile ? 16 : 24,
+          padding: isMobile ? 12 : 16,
         }}
       >
         {!addFormVisible ? (
@@ -227,13 +312,18 @@ const CurrencySettings = () => {
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setAddFormVisible(true)}
-            style={{backgroundColor: Colors.PRIMARY}}
+            loading={isLoading}
+            style={{
+              backgroundColor: Colors.PRIMARY,
+              width: isMobile ? '100%' : 'auto'
+            }}
+            size={isMobile ? "middle" : "large"}
           >
             {t("components.currencySettings.addButton")}
           </Button>
         ) : (
           <Form form={form} onFinish={handleAddCurrency} layout="vertical">
-            <Row gutter={16}>
+            <Row gutter={[isMobile ? 0 : 16, isMobile ? 16 : 24]}>
               <Col xs={24} md={12}>
                 <Form.Item
                   name="name"
@@ -242,7 +332,10 @@ const CurrencySettings = () => {
                     { required: true, message: t("components.currencySettings.nameRequired") },
                   ]}
                 >
-                  <Input placeholder={t("components.currencySettings.namePlaceholder")} />
+                  <Input 
+                    placeholder={t("components.currencySettings.namePlaceholder")}
+                    size={isMobile ? "middle" : "large"}
+                  />
                 </Form.Item>
               </Col>
 
@@ -254,7 +347,10 @@ const CurrencySettings = () => {
                     { required: true, message: t("components.currencySettings.codeRequired") },
                   ]}
                 >
-                  <Input placeholder={t("components.currencySettings.codePlaceholder")} />
+                  <Input 
+                    placeholder={t("components.currencySettings.codePlaceholder")}
+                    size={isMobile ? "middle" : "large"}
+                  />
                 </Form.Item>
               </Col>
 
@@ -266,7 +362,10 @@ const CurrencySettings = () => {
                     { required: true, message: t("components.currencySettings.symbolRequired") },
                   ]}
                 >
-                  <Input placeholder={t("components.currencySettings.symbolPlaceholder")} />
+                  <Input 
+                    placeholder={t("components.currencySettings.symbolPlaceholder")}
+                    size={isMobile ? "middle" : "large"}
+                  />
                 </Form.Item>
               </Col>
 
@@ -283,30 +382,47 @@ const CurrencySettings = () => {
                     step={0.01}
                     style={{ width: "100%" }}
                     placeholder={t("components.currencySettings.exchangeRatePlaceholder")}
+                    size={isMobile ? "middle" : "large"}
                   />
                 </Form.Item>
               </Col>
             </Row>
 
-            <Form.Item>
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined />} style={{backgroundColor: Colors.PRIMARY}}>
+            <Space 
+              direction={isMobile ? "vertical" : "horizontal"} 
+              style={{ width: '100%', justifyContent: 'flex-end' }}
+              size={isMobile ? 8 : 16}
+            >
+              <Button 
+                type="primary" 
+                htmlType="submit" 
+                icon={<SaveOutlined />} 
+                loading={isLoading}
+                style={{
+                  backgroundColor: Colors.PRIMARY,
+                  width: isMobile ? '100%' : 'auto'
+                }}
+                size={isMobile ? "middle" : "large"}
+              >
                 {t("components.currencySettings.save")}
               </Button>
               <Button
-                style={{ marginLeft: 8 }}
+                style={{ width: isMobile ? '100%' : 'auto' }}
                 icon={<CloseOutlined />}
                 onClick={() => setAddFormVisible(false)}
+                disabled={isLoading}
+                size={isMobile ? "middle" : "large"}
               >
                 {t("components.currencySettings.cancel")}
               </Button>
-            </Form.Item>
+            </Space>
           </Form>
         )}
       </Card>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={[isMobile ? 0 : 16, isMobile ? 16 : 24]}>
         {currencies.map((currency) => (
-          <Col xs={24} sm={12} md={8} lg={6} key={currency.key}>
+          <Col xs={24} sm={12} md={8} lg={6} key={currency.id}>
             {renderCurrencyCard(currency)}
           </Col>
         ))}

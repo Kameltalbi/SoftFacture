@@ -8,14 +8,14 @@
       "settings": "Settings",
       "invoices": "Invoices",
       "quotes": "Quotes",
-      "deliveryNotes": "Delivery Notes",
       "clients": "Clients",
       "suppliers": "Suppliers",
       "settingsLabel": "Settings",
       "taxId": "Tax ID",
       "products": "Products",
       "categories": "Categories",
-      "stock": "Stock"
+      "stock": "Stock",
+      "bondCommands": "Bond Commands"
     },
     "companySettings": {
       "cardTitle": "Company Information",
@@ -141,7 +141,8 @@
       "discount": "Discount",
       "vat": "VAT",
       "totalHT": "Total (HT)",
-      "previewButton": "Preview"
+      "previewButton": "Preview",
+      "priceFromProduct": "Price is pre-filled from product but can be modified"
     },
     "invoicePreview": {
       "invoiceTitle": "Invoice",
@@ -267,7 +268,9 @@
         "actions": "Actions"
       },
       "messages": {
-        "deleteSuccess": "Invoice with id {{id}} deleted"
+        "deleteSuccess": "Invoice with id {{id}} deleted",
+        "downloadSuccess": "Invoice PDF downloaded successfully",
+        "downloadError": "Failed to download invoice PDF"
       },
       "createTitle": "Create Invoice"
     },
@@ -344,6 +347,88 @@
         "accepted": "Accepted",
         "pending": "Pending",
         "rejected": "Rejected"
+      }
+    },
+    "bondCommand": {
+      "title": "Bond Commands",
+      "newCommandButton": "New Bond Command",
+      "searchPlaceholder": "Search by Command Number or Client",
+      "filterStatusPlaceholder": "Filter by Status",
+      "status": {
+        "draft": "Draft",
+        "sent": "Sent",
+        "paid": "Paid",
+        "cancelled": "Cancelled"
+      },
+      "menu": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "downloadPdf": "Download PDF",
+        "preview": "Preview"
+      },
+      "columns": {
+        "commandNumber": "Command Number",
+        "client": "Client",
+        "commandDate": "Command Date",
+        "dueDate": "Due Date",
+        "amount": "Amount",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "Bond Command",
+        "createTitle": "Create Bond Command",
+        "editTitle": "Edit Bond Command",
+        "commandNumber": "Command Number",
+        "client": "Client",
+        "clientPlaceholder": "Select a client",
+        "clientRequired": "Please select a client",
+        "currency": "Currency",
+        "currencyPlaceholder": "Select a currency",
+        "currencyRequired": "Please select a currency",
+        "commandDate": "Command Date",
+        "commandDateRequired": "Please select a command date",
+        "dueDate": "Due Date",
+        "status": "Status",
+        "notes": "Notes",
+        "items": {
+          "title": "Items",
+          "name": "Name",
+          "namePlaceholder": "Enter item name",
+          "description": "Description",
+          "descriptionPlaceholder": "Enter item description",
+          "quantity": "Quantity",
+          "unit": "Unit",
+          "unitPlaceholder": "Enter unit (e.g., pcs, kg)",
+          "unitPrice": "Unit Price",
+          "tax": "Tax",
+          "total": "Total",
+          "addItem": "Add Item"
+        },
+        "subtotal": "Subtotal",
+        "tax": "Tax",
+        "discount": "Discount",
+        "discountType": "Discount Type",
+        "discountTypeFixed": "Fixed Amount",
+        "discountTypePercentage": "Percentage",
+        "total": "Total",
+        "create": "Create",
+        "update": "Update",
+        "cancel": "Cancel"
+      },
+      "preview": {
+        "title": "Preview Bond Command"
+      },
+      "messages": {
+        "createSuccess": "Bond command created successfully",
+        "updateSuccess": "Bond command updated successfully",
+        "deleteSuccess": "Bond command deleted successfully",
+        "cancelSuccess": "Bond command cancelled successfully",
+        "downloadSuccess": "Bond command PDF downloaded successfully",
+        "downloadError": "Failed to download bond command PDF",
+        "deleteConfirm": "Are you sure you want to delete this bond command?",
+        "cancelConfirm": "Are you sure you want to cancel this bond command?"
       }
     }
   }

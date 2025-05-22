@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   Tag,
@@ -12,12 +12,13 @@ import {
   Button,
   Spin,
   Alert,
+  Grid,
 } from "antd";
 import ActionsDropdown from "../../components/common/ActionsDropdown";
 import { CheckCircleOutlined, CopyOutlined, DeleteOutlined, EditOutlined, FilePdfFilled, FilePdfOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteInvoice } from "../../container/redux/slices/invoicesSlice";
+import { deleteInvoice, fetchInvoices } from "../../container/redux/slices/invoicesSlice";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import {
@@ -28,9 +29,12 @@ import {
   WHITE,
   LIGHT_GREEN,
   LIGHT_RED,
+  BLACK,
 } from "../../utils/constants/colors";
 import { useTranslation } from "react-i18next";
 import PreviewInvoiceModal from "../../components/invoices/PreviewInvoiceModal";
+
+const { useBreakpoint } = Grid;
 
 dayjs.extend(isBetween);
 
@@ -42,6 +46,9 @@ const InvoicesScreen = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
+  const isTablet = screens.md && !screens.lg;
 
   const invoices = useSelector((state) => state.invoices.invoices);
   const loading = useSelector((state) => state.invoices.loading);
@@ -50,6 +57,10 @@ const InvoicesScreen = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredStatus, setFilteredStatus] = useState(null);
   const [filteredDates, setFilteredDates] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchInvoices());
+  }, [dispatch]);
 
   const handleSearch = (value) => {
     setSearchText(value.trim().toLowerCase());
@@ -69,9 +80,14 @@ const InvoicesScreen = () => {
   };
 
   const filteredData = invoices.filter((invoice) => {
+    const clientName =
+      typeof invoice?.client === "string"
+        ? invoice.client
+        : invoice?.client?.nom || invoice?.client?.fullName || invoice?.client?.name || "";
+
     const matchesSearch =
-      invoice?.number?.toLowerCase().includes(searchText) ||
-      invoice?.client?.toLowerCase().includes(searchText);
+      (invoice?.invoice_number?.toLowerCase().includes(searchText) ||
+        clientName.toLowerCase().includes(searchText));
 
     const matchesStatus = filteredStatus
       ? invoice.status === filteredStatus
@@ -93,51 +109,54 @@ const InvoicesScreen = () => {
   const columns = [
     {
       title: t("screens.invoice.columns.number"),
-      dataIndex: "number",
-      key: "number",
-      sorter: (a, b) => a.number.localeCompare(b.number),
-    },
-    {
-      title: t("screens.invoice.columns.client"),
-      dataIndex: "client",
-      key: "client",
-      sorter: (a, b) => a.client.localeCompare(b.client),
+      dataIndex: "invoice_number",
+      key: "invoice_number",
+      sorter: (a, b) => (a.invoice_number || "").localeCompare(b.invoice_number || ""),
     },
     {
       title: t("screens.invoice.columns.issueDate"),
       dataIndex: "issueDate",
       key: "issueDate",
       sorter: (a, b) => new Date(a.issueDate) - new Date(b.issueDate),
+      render: (date) => dayjs(date).format('DD/MM/YYYY'),
     },
     {
-      title: t("screens.invoice.columns.dueDate"),
-      dataIndex: "dueDate",
-      key: "dueDate",
-      sorter: (a, b) => new Date(a.dueDate) - new Date(b.dueDate),
+      title: t("screens.invoice.columns.client"),
+      dataIndex: "client",
+      key: "client",
+      sorter: (a, b) => {
+        const clientNameA = typeof a.client === "string" ? a.client : a.client?.nom || a.client?.fullName || a.client?.name || "";
+        const clientNameB = typeof b.client === "string" ? b.client : b.client?.nom || b.client?.fullName || b.client?.name || "";
+        return clientNameA.localeCompare(clientNameB);
+      },
+      render: (client) => {
+        if (typeof client === "string") return client;
+        return client?.nom || client?.fullName || client?.name || "-";
+      },
     },
     {
       title: t("screens.invoice.columns.amount"),
-      dataIndex: "amount",
-      key: "amount",
-      sorter: (a, b) => a.amount - b.amount,
-      render: (amount) => `$${amount.toFixed(2)}`,
+      dataIndex: "total_amount",
+      key: "total_amount",
+      sorter: (a, b) => (a.total_amount || 0) - (b.total_amount || 0),
+      render: (amount) => amount ? `${Number(amount).toFixed(3)} DT` : '0.000 DT',
     },
     {
       title: t("screens.invoice.columns.status"),
       dataIndex: "status",
       key: "status",
       render: (status) => {
-        let color = WHITE;
+        let color = BLACK;
         let backgroundColor = WHITE;
 
         if (status === t("screens.invoice.status.paid")) {
-          color = SUCCESS;
+          color = BLACK;
           backgroundColor = LIGHT_GREEN;
         } else if (status === t("screens.invoice.status.unpaid")) {
-          color = WARNING;
+          color = BLACK;
           backgroundColor = WHITE;
         } else if (status === t("screens.invoice.status.overdue")) {
-          color = ERROR;
+          color = BLACK;
           backgroundColor = LIGHT_RED;
         }
 
@@ -219,16 +238,47 @@ const InvoicesScreen = () => {
   };
 
   const handleDownloadPDF = async (id) => {
-   // const blob = await api.downloadInvoicePdf(id);
-    // const url = window.URL.createObjectURL(blob);
-    // const link = document.createElement("a");
-    // link.href = url;
-    // link.setAttribute("download", `invoice_${id}.pdf`);
-    // document.body.appendChild(link);
-    // link.click();
-    // link.remove();
-        message.success(t("downloaded pdf"));
+    try {
+      // Make a GET request to the download PDF endpoint
+      const response = await fetch(`https://fa33-2c0f-f698-c237-9b5e-bd97-b055-f3dc-4700.ngrok-free.app/api/invoices/${id}/download-pdf`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to download PDF');
+      }
+
+      // Get the blob from the response
+      const blob = await response.blob();
+      
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Set the filename using the invoice number if available
+      const invoice = invoices.find(inv => inv.id === id);
+      const filename = invoice ? `invoice_${invoice.invoice_number}.pdf` : `invoice_${id}.pdf`;
+      link.setAttribute('download', filename);
+      
+      // Append to body, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      // Clean up the URL object
+      window.URL.revokeObjectURL(url);
+      
+      message.success(t("screens.invoice.messages.downloadSuccess"));
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      message.error(t("screens.invoice.messages.downloadError"));
+    }
   };
 
   const handleSendEmail = async (id) => {
@@ -237,21 +287,26 @@ const InvoicesScreen = () => {
   };
 
   return (
-    <div style={{ padding: 24, backgroundColor: WHITE }}>
-      <Row align="middle" justify="space-between" style={{ marginBottom: 16 }}>
-        <Col>
-          <h1 style={{ margin: 0, color: PRIMARY }}>
+    <div style={{ padding: isMobile ? 16 : 24, backgroundColor: WHITE }}>
+      <Row gutter={[16, 16]} align="middle" justify="space-between">
+        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+          <h1 style={{ 
+            margin: 0, 
+            color: PRIMARY,
+            fontSize: isMobile ? '1.5rem' : '2rem'
+          }}>
             {t("screens.invoice.title")}
           </h1>
         </Col>
-        <Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12} style={{ textAlign: isMobile ? 'left' : 'right' }}>
           <Button
             type="primary"
-            size="large"
+            size={isMobile ? "middle" : "large"}
             onClick={() => navigate("/invoices/new")}
             style={{
               backgroundColor: PRIMARY,
               borderColor: PRIMARY,
+              width: isMobile ? '100%' : 'auto'
             }}
           >
             {t("screens.invoice.newInvoiceButton")}
@@ -259,25 +314,33 @@ const InvoicesScreen = () => {
         </Col>
       </Row>
 
-      <Row align="middle" justify="space-between" style={{ marginBottom: 16 }}>
-        <Col flex="auto" style={{ textAlign: "center" }}>
-          <RangePicker onChange={handleDateChange} size="large" />
+      <Row gutter={[16, 16]} style={{ marginTop: 16, marginBottom: 16 }}>
+        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+          <RangePicker 
+            onChange={handleDateChange} 
+            size={isMobile ? "middle" : "large"}
+            style={{ width: '100%' }}
+          />
         </Col>
-        <Col>
-          <Space>
+        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+          <Space 
+            direction={isMobile ? "vertical" : "horizontal"} 
+            style={{ width: '100%' }}
+            size={isMobile ? 8 : 16}
+          >
             <Search
               placeholder={t("screens.invoice.searchPlaceholder")}
               onChange={(e) => handleSearch(e.target.value)}
               allowClear
-              style={{ width: 250 }}
-              size="large"
+              style={{ width: isMobile ? '100%' : 250 }}
+              size={isMobile ? "middle" : "large"}
             />
             <Select
               placeholder={t("screens.invoice.filterStatusPlaceholder")}
               onChange={handleStatusChange}
               allowClear
-              style={{ width: 180 }}
-              size="large"
+              style={{ width: isMobile ? '100%' : 180 }}
+              size={isMobile ? "middle" : "large"}
             >
               <Option value={t("screens.invoice.status.paid")}>
                 {t("screens.invoice.status.paid")}
@@ -294,11 +357,32 @@ const InvoicesScreen = () => {
       </Row>
 
       {loading ? (
-        <Spin tip="Loading invoices..." />
+        <div style={{ padding: '24px', textAlign: 'center' }}>
+          <Spin>
+            <div style={{ height: '200px' }} />
+          </Spin>
+        </div>
       ) : error ? (
         <Alert message={error} type="error" />
       ) : (
-        <Table columns={columns} dataSource={filteredData} rowKey="id" />
+        <Table 
+          columns={columns.map(col => ({
+            ...col,
+            ellipsis: true,
+            width: isMobile ? undefined : col.width,
+            responsive: ['xs', 'sm', 'md', 'lg', 'xl']
+          }))} 
+          dataSource={filteredData} 
+          rowKey="id"
+          scroll={{ x: isMobile ? 'max-content' : undefined }}
+          pagination={{
+            responsive: true,
+            showSizeChanger: !isMobile,
+            showTotal: (total) => t("common.totalItems", { total }),
+            pageSize: isMobile ? 10 : 20,
+            pageSizeOptions: ['10', '20', '50', '100']
+          }}
+        />
       )}
     </div>
   );

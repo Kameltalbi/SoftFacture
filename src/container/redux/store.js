@@ -7,6 +7,7 @@ import invoicesReducer from "./slices/invoicesSlice";
 import categoriesReducer from "./slices/categoriesSlice";
 import productsReducer from "./slices/productsSlice";
 import quotesReducer from "./slices/quotesSlice";
+import bondCommandsReducer from "./slices/bondCommandsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,9 +15,10 @@ export const store = configureStore({
     clients: clientsReducer,
     settings: settingsReducer,
     invoices: invoicesReducer,
-    supplier: supplierReducer,
+    suppliers: supplierReducer,
     categories: categoriesReducer,
     products: productsReducer,
     quotes: quotesReducer,
+    bondCommands: bondCommandsReducer,
   },
 });

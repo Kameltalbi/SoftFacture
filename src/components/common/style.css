@@ -1,3 +1,10 @@
+/* Reset some basic elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   --primary: #4B7090;      /* Main blue color */
   --secondary: #2C4159 ;    /* Light background */
@@ -6,7 +13,10 @@
   --text-color: #F5F7FA;
 }
 
+/* Sidebar base styles */
 .sidebar {
+  position: relative;
+  z-index: 1000;
   background-color: var(--secondary);
   color: var(--text-color);
   display: flex;
@@ -16,14 +26,13 @@
   overflow: hidden;
 }
 
+/* Sidebar transitions */
 .sidebar-expanded {
-  width: 260px;
-  padding: 20px 15px;
+  width: 250px;
 }
 
 .sidebar-collapsed {
-  width: 40px;
-  padding: 20px 10px;
+  width: 80px;
 }
 
 .sidebar-header {
@@ -99,14 +108,15 @@
   color: var(--text-color);
 }
 
+/* Menu item hover effect */
 .sidebar-menu-item:hover {
-  background-color: var(--primary);
-  color: var(--white);
+  background-color: #f5f5f5;
 }
 
+/* Active menu item */
 .sidebar-menu-item.active {
-  background-color: var(--primary);
-  color: var(--white);
+  color: #1890ff;
+  background-color: #e6f7ff;
 }
 
 .sidebar-item-icon {
@@ -128,6 +138,7 @@
   font-size: 12px;
   color: var(--dark-gray);
 }
+
 .sidebar-footer {
   display: flex;
   flex-direction: row;
@@ -154,4 +165,22 @@
 
 .sidebar-logout-button:hover {
   color: #ff4d4f; /* red hover color */
+}
+
+/* Scrollbar styling */
+.sidebar-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

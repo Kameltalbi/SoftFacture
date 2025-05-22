@@ -1,47 +1,121 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { addClient } from "../../container/redux/slices/clientsSlice";
-import ClientForm from "../../components/clients/ClientForm";
+import { Form, Input, Button, Card, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { createClient } from "../../container/redux/slices/clientsSlice";
 import { useTranslation } from "react-i18next";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 const CreateClient = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+  const { user } = useSelector((state) => state.auth);
 
-  const handleSubmit = (values) => {
-    dispatch(addClient(values));
-    navigate("/clients");
+  const onFinish = async (values) => {
+    try {
+      // Add company_id from the authenticated user
+      const clientData = {
+        ...values,
+        company_id: user.company_id,
+      };
+      await dispatch(createClient(clientData)).unwrap();
+      message.success(t("screens.client.messages.createSuccess"));
+      navigate("/clients");
+    } catch (error) {
+      message.error(error || t("screens.client.messages.createError"));
+    }
   };
 
   return (
-    <div style={{ padding: "24px" }}>
-      <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "24px" }}
-      >
+    <div>
+      <div style={{ marginBottom: 16 }}>
         <Button
-          type="default"
-          shape="circle"
           icon={<ArrowLeftOutlined />}
-          onClick={() => navigate(-1)}
-          style={{
-            width: "48px",
-            height: "48px",
-            fontSize: "20px",
-            marginBottom: "8px",
-            backgroundColor: "#fff",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-            border: "none",
-          }}
-        />
-        <h1 style={{ fontSize: "24px", fontWeight: "bold", marginLeft: "16px" }}>
-          {t("screens.client.createTitle")}
-        </h1>
+          onClick={() => navigate("/clients")}
+        >
+          {t("common.back")}
+        </Button>
       </div>
-      <ClientForm onFinish={handleSubmit} />
+
+      <Card title={t("screens.client.createTitle")}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          initialValues={{
+            nom: "",
+            email: "",
+            telephone: "",
+            adresse: "",
+            n_fiscal: "",
+          }}
+        >
+          <Form.Item
+            name="nom"
+            label={t("components.clientForm.nameLabel")}
+            rules={[
+              {
+                required: true,
+                message: t("components.clientForm.nameRequired"),
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="telephone"
+            label={t("components.clientForm.phoneLabel")}
+            rules={[
+              {
+                required: true,
+                message: t("components.clientForm.phoneRequired"),
+              },
+              {
+                pattern: /^[+]?[0-9]{8,15}$/,
+                message: t("components.clientForm.phoneInvalid"),
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            label={t("components.clientForm.emailLabel")}
+            rules={[
+              {
+                type: "email",
+                message: t("components.clientForm.emailInvalid"),
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="n_fiscal"
+            label={t("components.clientForm.fiscalIdLabel")}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="adresse"
+            label={t("components.clientForm.addressLabel")}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              {t("common.save")}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 };

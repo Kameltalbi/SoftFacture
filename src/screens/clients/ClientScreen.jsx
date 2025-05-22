@@ -1,33 +1,82 @@
-import React from "react";
-import { Table, Button } from "antd";
+import React, { useEffect } from "react";
+import { Table, Button, message, Spin, Alert, Grid, Row, Col, Space } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteClient } from "../../container/redux/slices/clientsSlice";
+import { deleteClient, fetchClients } from "../../container/redux/slices/clientsSlice";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ActionsDropdown from "../../components/common/ActionsDropdown";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { PRIMARY } from "../../utils/constants/colors";
+
+const { useBreakpoint } = Grid;
 
 const ClientScreen = () => {
   const { t } = useTranslation();
-  const { clients } = useSelector((state) => state.clients);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
 
-  const handleDelete = (id) => {
-    dispatch(deleteClient(id));
+  const { clients, loading, error } = useSelector((state) => state.clients);
+
+  useEffect(() => {
+    dispatch(fetchClients());
+  }, [dispatch]);
+
+  const handleDelete = async (id) => {
+    try {
+      await dispatch(deleteClient(id)).unwrap();
+      message.success(t("screens.client.messages.deleteSuccess"));
+    } catch (error) {
+      message.error(error || t("screens.client.messages.deleteError"));
+    }
   };
 
   const columns = [
-    { title: t("components.clientForm.fullNameLabel"), dataIndex: "fullName", key: "fullName" },
-    { title: t("components.clientForm.emailLabel"), dataIndex: "email", key: "email" },
-    { title: t("components.clientForm.phoneLabel"), dataIndex: "phone", key: "phone" },
-    { title: t("components.clientForm.companyLabel"), dataIndex: "company", key: "company" },
-    { title: t("components.clientForm.fiscalIdLabel"), dataIndex: "fiscalId", key: "fiscalId" },
+    { 
+      title: t("components.clientForm.nameLabel"), 
+      dataIndex: "nom", 
+      key: "nom",
+      sorter: (a, b) => a.nom.localeCompare(b.nom),
+      ellipsis: true,
+      width: isMobile ? undefined : 200,
+    },
+    { 
+      title: t("components.clientForm.emailLabel"), 
+      dataIndex: "email", 
+      key: "email",
+      sorter: (a, b) => (a.email || '').localeCompare(b.email || ''),
+      ellipsis: true,
+      width: isMobile ? undefined : 200,
+    },
+    { 
+      title: t("components.clientForm.phoneLabel"), 
+      dataIndex: "telephone", 
+      key: "telephone",
+      sorter: (a, b) => a.telephone.localeCompare(b.telephone),
+      ellipsis: true,
+      width: isMobile ? undefined : 150,
+    },
+    { 
+      title: t("components.clientForm.fiscalIdLabel"), 
+      dataIndex: "n_fiscal", 
+      key: "n_fiscal",
+      sorter: (a, b) => (a.n_fiscal || '').localeCompare(b.n_fiscal || ''),
+      ellipsis: true,
+      width: isMobile ? undefined : 150,
+    },
+    { 
+      title: t("components.clientForm.addressLabel"), 
+      dataIndex: "adresse", 
+      key: "adresse",
+      ellipsis: true,
+      width: isMobile ? undefined : 250,
+    },
     {
       title: "",
       key: "actions",
-      width:50,
+      width: isMobile ? 80 : 100,
+      fixed: 'right',
       render: (_, record) => (
         <ActionsDropdown
           menuItems={[
@@ -50,24 +99,71 @@ const ClientScreen = () => {
     },
   ];
 
-  return (
-    <div style={{ padding: "24px" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "24px",
-        }}
-      >
-        <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>{t("screens.client.title")}</h1>
-        <Button type="primary"  onClick={() => navigate("/clients/create")} style={{
-          backgroundColor: PRIMARY,
-        }}>
-          {t("screens.client.addNew")}
-        </Button>
+  if (loading && !clients.length) {
+    return (
+      <div style={{ textAlign: 'center', padding: isMobile ? 24 : 50 }}>
+        <Spin size="large" tip={t("common.loading")} />
       </div>
+    );
+  }
 
-      <Table dataSource={clients} columns={columns} rowKey="id" />
+  if (error) {
+    return (
+      <Alert
+        message={t("common.error")}
+        description={error}
+        type="error"
+        showIcon
+        action={
+          <Button size={isMobile ? "small" : "middle"} type="primary" onClick={() => dispatch(fetchClients())}>
+            {t("common.retry")}
+          </Button>
+        }
+        style={{ margin: isMobile ? 16 : 24 }}
+      />
+    );
+  }
+
+  return (
+    <div style={{ padding: isMobile ? 16 : 24 }}>
+      <Row justify="space-between" align="middle" style={{ marginBottom: isMobile ? 16 : 24 }}>
+        <Col>
+          <h1 style={{ 
+            fontSize: isMobile ? 20 : 24, 
+            fontWeight: "bold",
+            margin: 0 
+          }}>
+            {t("screens.client.title")}
+          </h1>
+        </Col>
+        <Col>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => navigate('/clients/create')}
+            style={{ backgroundColor: PRIMARY }}
+            size={isMobile ? "middle" : "large"}
+          >
+            {t("screens.client.actions.create")}
+          </Button>
+        </Col>
+      </Row>
+
+      <Table
+        columns={columns}
+        dataSource={clients}
+        rowKey="id"
+        loading={loading}
+        scroll={{ x: isMobile ? 'max-content' : undefined }}
+        pagination={{
+          showSizeChanger: !isMobile,
+          showTotal: (total) => t("common.totalItems", { total }),
+          pageSize: isMobile ? 10 : 20,
+          pageSizeOptions: ['10', '20', '50', '100'],
+          size: isMobile ? "small" : "default",
+        }}
+        size={isMobile ? "small" : "middle"}
+      />
     </div>
   );
 };

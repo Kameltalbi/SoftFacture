@@ -7,7 +7,9 @@ import {
   Select,
   Radio,
   Button,
-  message
+  message,
+  Alert,
+  Spin
 } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,9 +18,12 @@ import { useWatch } from "antd/es/form/Form";
 import * as Colors from "../../utils/constants/colors";
 
 import {
-  setInvoiceNumbering,
+  fetchInvoiceNumbering,
+  updateInvoiceNumbering,
   selectInvoiceNumbering,
-  setLoading
+  selectLoading,
+  selectError,
+  clearError
 } from "../../container/redux/slices/settingsSlice";
 
 const { Option } = Select;
@@ -26,30 +31,39 @@ const { Option } = Select;
 const InvoiceNumberSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   const invoiceNumbering = useSelector(selectInvoiceNumbering);
-  const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector(selectLoading);
+  const error = useSelector(selectError);
 
   // Watch all form fields for live preview updates
   const watchedValues = useWatch([], form);
 
   useEffect(() => {
-    form.setFieldsValue(invoiceNumbering);
+    // Fetch invoice numbering settings when component mounts
+    dispatch(fetchInvoiceNumbering());
+
+    // Clear error when component unmounts
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Update form when invoice numbering settings change
+    if (invoiceNumbering) {
+      form.setFieldsValue(invoiceNumbering);
+    }
   }, [invoiceNumbering, form]);
 
-  const onFinish = (values) => {
-    setIsLoading(true);
-    dispatch(setLoading(true));
-
-    // Simulate API call
-    setTimeout(() => {
-      dispatch(setInvoiceNumbering(values));
-      dispatch(setLoading(false));
-      setIsLoading(false);
+  const onFinish = async (values) => {
+    try {
+      await dispatch(updateInvoiceNumbering(values)).unwrap();
       message.success(t("components.invoiceNumberSettings.saveSuccess"));
-      console.log("Updated invoice numbering settings:", values);
-    }, 1000);
+    } catch (error) {
+      message.error(error || t("components.invoiceNumberSettings.saveError"));
+    }
   };
 
   const previewText = useMemo(() => {
@@ -58,8 +72,27 @@ const InvoiceNumberSettings = () => {
     return `${prefix || ""}${padded}${suffix || ""}`;
   }, [watchedValues]);
 
+  if (isLoading && !invoiceNumbering) {
+    return (
+      <div style={{ padding: 24, textAlign: 'center' }}>
+        <Spin size="large" />
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: 24 }}>
+      {error && (
+        <Alert
+          message={error}
+          type="error"
+          showIcon
+          style={{ marginBottom: 24 }}
+          closable
+          onClose={() => dispatch(clearError())}
+        />
+      )}
+
       <Card
         title={t("components.invoiceNumberSettings.cardTitle")}
         style={{
@@ -135,9 +168,10 @@ const InvoiceNumberSettings = () => {
           <Form.Item
             name="resetPeriod"
             label={t("components.invoiceNumberSettings.resetPeriodLabel")}
+            initialValue="annually"
           >
             <Radio.Group>
-              <Radio value="annual">
+              <Radio value="annually">
                 {t("components.invoiceNumberSettings.annual")}
               </Radio>
               <Radio value="monthly">

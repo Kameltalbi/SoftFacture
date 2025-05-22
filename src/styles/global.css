@@ -1,0 +1,177 @@
+:root {
+  /* Primary Colors */
+  --primary-color: #4B7090;
+  --primary-dark: #2C4159;
+  --white: #FFFFFF;
+  --light-gray: #F5F7FA;
+
+  /* Status Colors */
+  --success-color: #6BB98C;
+  --warning-color: #E8A562;
+  --error-color: #E57373;
+  --secondary-text: #A0A8B3;
+
+  /* Semantic Colors */
+  --text-primary: #2C4159;
+  --text-secondary: #A0A8B3;
+  --border-color: #E5E9F0;
+  --background-color: #F5F7FA;
+  --card-background: #FFFFFF;
+
+  /* Additional Utility Colors */
+  --hover-color: #3D5A73;
+  --disabled-color: #D1D5DB;
+  --link-color: #4B7090;
+  --link-hover-color: #3D5A73;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+/* Ant Design Overrides */
+.ant-btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.ant-btn-primary:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+.ant-btn-primary[disabled] {
+  background-color: var(--disabled-color);
+  border-color: var(--disabled-color);
+}
+
+.ant-input:focus,
+.ant-input-focused {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(75, 112, 144, 0.2);
+}
+
+.ant-input:hover {
+  border-color: var(--primary-color);
+}
+
+.ant-card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+/* Status Tags */
+.ant-tag-success {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+  color: var(--white);
+}
+
+.ant-tag-warning {
+  background-color: var(--warning-color);
+  border-color: var(--warning-color);
+  color: var(--white);
+}
+
+.ant-tag-error {
+  background-color: var(--error-color);
+  border-color: var(--error-color);
+  color: var(--white);
+}
+
+/* Links */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  margin-bottom: 0.5em;
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: 1em;
+}
+
+/* Table Styles */
+.ant-table {
+  background-color: var(--card-background);
+}
+
+.ant-table-thead > tr > th {
+  background-color: var(--light-gray);
+  color: var(--text-primary);
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: var(--light-gray);
+}
+
+/* Form Styles */
+.ant-form-item-label > label {
+  color: var(--text-primary);
+}
+
+.ant-form-item-explain-error {
+  color: var(--error-color);
+}
+
+/* Menu Styles */
+.ant-menu-item-selected {
+  background-color: var(--primary-color) !important;
+  color: var(--white) !important;
+}
+
+.ant-menu-item:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Modal Styles */
+.ant-modal-content {
+  background-color: var(--card-background);
+  border-radius: 8px;
+}
+
+.ant-modal-header {
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ant-modal-title {
+  color: var(--text-primary);
+}
+
+/* Select Styles */
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+  border-color: var(--primary-color);
+}
+
+.ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(75, 112, 144, 0.2);
+}
+
+/* DatePicker Styles */
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: var(--primary-color);
+}
+
+.ant-picker-focused {
+  box-shadow: 0 0 0 2px rgba(75, 112, 144, 0.2);
+} 

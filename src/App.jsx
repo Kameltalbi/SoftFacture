@@ -1,5 +1,6 @@
 import AppRoutes from "./navigation/AppRoutes";
 import { message } from "antd";
+import "./styles/global.css";
 
 message.config({
   top: 30, // distance from the top of the viewport (in px)

@@ -17,37 +17,22 @@ const PrivateLayout = ({ children }) => {
   }
 
   return (
-    <>
-      <style>
-        {`
-          html, body, #root {
-            margin: 0;
-            padding: 0;
-
-          }
-        `}
-      </style>
-      <div
-        style={{
-          display: "flex",
-          margin: 0,
-          backgroundColor: "red",
-          position:"absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-      >
+    <Layout style={{ minHeight: '100vh', margin: 0, padding: 0 }}>
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
         {/* Sidebar */}
         <Sidebar />
 
         {/* Main Content */}
-        <div style={{ flex: 1, padding: "20px", backgroundColor : LIGHT_GRAY}}>
+        <Content style={{ 
+          flex: 1, 
+          padding: '20px', 
+          backgroundColor: LIGHT_GRAY,
+          overflow: 'auto'
+        }}>
           {children}
-        </div>
+        </Content>
       </div>
-    </>
+    </Layout>
   );
 };
 

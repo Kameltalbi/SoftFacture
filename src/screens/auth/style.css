@@ -1,44 +1,143 @@
 /* src/pages/LoginScreen/style.css */
 
-.login-wrapper {
-  display: flex;
+.auth-container {
   min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color, #F5F7FA);
+  padding: 20px;
 }
 
-.login-left, .login-right {
+.auth-content {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background-color: var(--card-background, #FFFFFF);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow-color, rgba(0, 0, 0, 0.1));
+  overflow: hidden;
+}
+
+.auth-left {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 40px;
+  background-color: var(--primary-color, #4B7090);
 }
 
-.login-right {
-  flex: 1.2;
-}
-
-.login-box {
-  width: 100%;
-  max-width: 480px;
-  padding: 3rem 2rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-  border-radius: 1rem;
-}
-
-.forgot-pass {
-  text-align: right;
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
-}
-
-.signup-link {
-  text-align: center;
-  font-size: 0.85rem;
-}
-
-.login-illustration {
-  width: 100%;
-  max-width: 450px;
+.auth-illustration {
+  max-width: 100%;
   height: auto;
+}
+
+.auth-right {
+  flex: 1;
+  padding: 40px;
+}
+
+.auth-card {
+  width: 100%;
+  border: none;
+  box-shadow: none;
+}
+
+.auth-header {
+  margin-bottom: 32px;
+}
+
+.auth-header h2 {
+  color: var(--text-primary, #2C4159);
+  margin-bottom: 8px;
+}
+
+.auth-header p {
+  color: var(--text-secondary, #A0A8B3);
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.auth-links a {
+  color: var(--link-color, #4B7090);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+  color: var(--link-hover-color, #3D5A73);
+}
+
+/* Form Styles */
+.ant-form-item-label > label {
+  color: var(--text-primary, #2C4159);
+}
+
+.ant-input-affix-wrapper {
+  border-color: var(--border-color, #E5E9F0);
+}
+
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper:focus {
+  border-color: var(--primary-color, #4B7090);
+}
+
+.ant-input-affix-wrapper-focused {
+  box-shadow: 0 0 0 2px rgba(75, 112, 144, 0.2);
+}
+
+.ant-btn-primary {
+  background-color: var(--primary-color, #4B7090);
+  border-color: var(--primary-color, #4B7090);
+}
+
+.ant-btn-primary:hover {
+  background-color: var(--hover-color, #3D5A73);
+  border-color: var(--hover-color, #3D5A73);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-content {
+    flex-direction: column;
+  }
+
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    padding: 24px;
+  }
+}
+
+/* Error States */
+.ant-form-item-has-error .ant-input-affix-wrapper {
+  border-color: var(--error-color, #E57373);
+}
+
+.ant-form-item-explain-error {
+  color: var(--error-color, #E57373);
+}
+
+/* Success States */
+.ant-form-item-has-success .ant-input-affix-wrapper {
+  border-color: var(--success-color, #6BB98C);
+}
+
+/* Loading States */
+.ant-btn-loading {
+  opacity: 0.8;
+}
+
+/* Disabled States */
+.ant-btn-primary[disabled] {
+  background-color: var(--disabled-color, #D1D5DB);
+  border-color: var(--disabled-color, #D1D5DB);
+  color: var(--white, #FFFFFF);
 }
